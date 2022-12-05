@@ -12,17 +12,19 @@ datasource db {
 model user {
   id Int @id @default(autoincrement())
   full_name String
-  user_name String
-  email String
+  user_name String @unique
+  email String @unique
   password_hash String
+  @@map("Users")
 
 }
 
 model hotel {
   id Int @id @default(autoincrement())
-  hotel_name String
-  user_name String
-  email String
+  hotel_name String @unique
+  user_name String @unique
+  email String  @unique
   password_hash String
+  @@map("Hotels")
 }
 

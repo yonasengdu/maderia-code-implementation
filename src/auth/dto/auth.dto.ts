@@ -2,7 +2,7 @@ import {IsEmail, IsNotEmpty,IsString,Length} from 'class-validator';
 
 
 
-export class userAuthDto{
+export class UserAuthDto{
    
     @IsNotEmpty()
     @IsString()
@@ -20,7 +20,7 @@ export class userAuthDto{
     @IsString()
     password:string
 }
-export class hotelAuthDto{
+export class HotelAuthDto{
     @IsNotEmpty()
     @IsString()
     hotel_name: string

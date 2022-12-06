@@ -1,13 +1,13 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { hotelAuthDto, userAuthDto } from "./dto";
+import { HotelAuthDto, UserAuthDto } from "./dto";
 import * as argon from "argon2"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 @Injectable()
 export class AuthService{ 
     constructor(private prisma: PrismaService){}
 
-    async userSignup(dto:userAuthDto){
+    async userSignup(dto:UserAuthDto){
         //Generate password Hash for the user password
         const hash = await argon.hash(dto.password);
         // save the new user in db 
@@ -43,7 +43,7 @@ export class AuthService{
     } 
 
 
-    async hotelSignup(dto:hotelAuthDto){
+    async hotelSignup(dto:HotelAuthDto){
          //Generate password Hash for the user password
          const hash = await argon.hash(dto.password)
         //  save the user(hotel) in db

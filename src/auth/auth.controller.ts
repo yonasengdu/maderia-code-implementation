@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { idText } from 'typescript';
 import { AuthService } from './auth.service';
-import { HotelSignupDto, UserSigninDto, UserSignupDto } from './dto';
+import { HotelSigninDto, HotelSignupDto, UserSigninDto, UserSignupDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -17,9 +17,8 @@ export class AuthController {
   }
 
   @Post('hotelSignin')
-  hotelSignin(@Body() dto: HotelSignupDto) {
-    console.log(dto)
-    return 'hello hotel';
+  hotelSignin(@Body() dto: HotelSigninDto) {
+    return this.authservice.hotelSignin(dto)
   }
 
   @Post('userSignin')

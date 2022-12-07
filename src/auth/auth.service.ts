@@ -1,13 +1,44 @@
-import { ForbiddenException, HttpException, HttpStatus, Injectable, Param } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { HotelSigninDto, HotelSignupDto, UserSigninDto, UserSignupDto } from './dto';
+import {
+  HotelSigninDto,
+  HotelSignupDto,
+  UserSigninDto,
+  UserSignupDto,
+} from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { hotel, user } from '@prisma/client';
+/**
+ * The AuthService class is where most of the authentication logic goes in. This
+ * includes writing data to and reading data from the database. It has methods
+ * to sign up a user/hotel, sign in a user/hotel and delete user/hotel accounts.
+ */
 @Injectable()
 export class AuthService {
+  /**
+   * We will use the PrismaService class to talk to the database, so it gets injected here. read about "dependency injection" for more.
+   * @param prisma An instance of PrismaService gets passed to the constructor. This class extends the PrismaClient class that comes with prisma. It has all the necessary methods to talk to the database.
+   */
   constructor(private prisma: PrismaService) {}
 
+  /**
+   * This method takes a valid UserAuthDto object and writes it to the database as a new user instance.
+   * Before saving the data to database, we hash the plain password using the "argon" utility. Argon hashes
+   * strings asynchronously, so this method is also asynchronous. A try-catch block will try to write to the
+   * database. If the database write fails for unique constraint violations, the PrismaService will throw
+   * appropriate errors. Currently, we catch those errors and throw them back, but what we actually need to do
+   * is return the signup html template with an error message. Additionally, now we're returning a user object
+   * upon successful signup. In future iterations, we should generate a JWT (Json Web Token), return that, and
+   * redirect to the index page.
+   * @param dto This is instance of the UserAuthDto (Data Transfer Object) that's received by a controller.
+   * we know it is valid data because it has passed through nest guards.
+   */
   async userSignup(dto: UserSignupDto) {
     //Generate password Hash for the user password
     const hash = await argon.hash(dto.password);
@@ -27,22 +58,34 @@ export class AuthService {
           email: true,
         },
       });
-
       return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           throw new ForbiddenException(
-            `the ${error.meta.target} creadential has been taken`,
+            `the ${error.meta.target} credential has been taken`,
           );
         }
       }
       throw error;
     }
-
-    //return the saved user
   }
 
+  /**
+   * This method takes a valid HotelAuthDto object and writes it to the database
+   * as a new hotel instance. Before saving the data to database, we hash the plain
+   * password using the “argon” utility. Argon hashes strings asynchronously, so
+   * this method is also asynchronous. A try-catch block will try to write to the
+   * database. If the database write fails for unique constraint violations, the
+   * PrismaService will throw appropriate errors. Currently, we catch those errors
+   * and throw them back, but what we actually need to do is return the signup html
+   * template with an error message. Additionally, now we're returning a user object
+   * upon successful signup. In future iterations, we should generate a JWT (Json Web Token),
+   * return that, and redirect to the index page.
+   * @param dto This is instance of the UserAuthDto (Data Transfer Object) that's
+   * received by a controller. we know it is valid data because it has passed through
+   * nest guards.
+   */
   async hotelSignup(dto: HotelSignupDto) {
     //Generate password Hash for the user password
     const hash = await argon.hash(dto.password);
@@ -68,7 +111,7 @@ export class AuthService {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           throw new ForbiddenException(
-            `the ${error.meta.target} creadential has been taken`,
+            `the ${error.meta.target} credential has been taken`,
           );
         }
       }
@@ -76,38 +119,50 @@ export class AuthService {
     }
   }
 
-  async userSignin(dto: UserSigninDto) {
+  async userSignIn(dto: UserSigninDto) {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
       },
     });
-    if (!user){
+    if (!user) {
       // throw Error('the email is not registered.')
-      throw new HttpException('the email is not registered',HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        'the email is not registered',
+        HttpStatus.FORBIDDEN,
+      );
     }
 
-    const passwordCorrect = await argon.verify(user.password_hash, dto.password)
-    if (passwordCorrect){
+    const passwordCorrect = await argon.verify(
+      user.password_hash,
+      dto.password,
+    );
+    if (passwordCorrect) {
       return 'You are logged in as a user.';
     }
     throw new HttpException('wrong password', HttpStatus.FORBIDDEN);
   }
 
-  async hotelSignin(dto: HotelSigninDto){
+  async hotelSignIn(dto: HotelSigninDto) {
     const theHotel = await this.prisma.hotel.findUnique({
       where: {
-        email: dto.email
-      }
+        email: dto.email,
+      },
     });
-    if (!theHotel){
-      throw new HttpException('the email is not registerd', HttpStatus.FORBIDDEN)
+    if (!theHotel) {
+      throw new HttpException(
+        'the email is not registered',
+        HttpStatus.FORBIDDEN,
+      );
     }
-    const passwordCorrect = await argon.verify(theHotel.password_hash, dto.password)
-    if (passwordCorrect){
-      return "you are logged in as a hotel."
+    const passwordCorrect = await argon.verify(
+      theHotel.password_hash,
+      dto.password,
+    );
+    if (passwordCorrect) {
+      return 'you are logged in as a hotel.';
     }
-    throw new HttpException("wrong password", HttpStatus.FORBIDDEN)
+    throw new HttpException('wrong password', HttpStatus.FORBIDDEN);
   }
   // delete user function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
   async deleteUser(id: string): Promise<user> {

@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false
   },
   "typedocOptions": {
-    "entryPoints": ["src/*.ts"],
+    "entryPoints": ["src/*.ts", "src/*/*.ts", "src/*/*/*.ts"],
     "out": "docs"
 }
 }

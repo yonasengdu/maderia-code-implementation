@@ -36,3 +36,13 @@ export class HotelSignupDto{
     @IsString()
     password: string
 }
+
+export class UserSigninDto{
+    @IsNotEmpty()
+    @IsEmail()
+    email: string
+    @IsNotEmpty()
+    @IsString()
+    password: string
+}
+

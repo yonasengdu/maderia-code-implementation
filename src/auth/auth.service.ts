@@ -1,109 +1,127 @@
-import { ForbiddenException, Injectable, Param } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { HotelAuthDto, UserAuthDto } from "./dto";
-import * as argon from "argon2"
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { hotel, user } from "@prisma/client";
+import { ForbiddenException, HttpException, HttpStatus, Injectable, Param } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { HotelSignupDto, UserSigninDto, UserSignupDto } from './dto';
+import * as argon from 'argon2';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { hotel, user } from '@prisma/client';
 @Injectable()
-export class AuthService{ 
-    constructor(private prisma: PrismaService){}
+export class AuthService {
+  constructor(private prisma: PrismaService) {}
 
-    async userSignup(dto:UserAuthDto){
-        //Generate password Hash for the user password
-        const hash = await argon.hash(dto.password);
-        // save the new user in db 
-        try{
-            const user = await this.prisma.user.create({
-                data: {
-                    full_name:dto.full_name,
-                    user_name: dto.user_name,
-                    password_hash:  hash.trim(),
-                    email: dto.email,
-                },
-                select:{
-                    full_name: true,
-                    user_name:true,
-                    password_hash:false,
-                    email:true,
-    
-                }
-            });
-            
-            return user
-        } catch (error){
-            if(error instanceof PrismaClientKnownRequestError){
-                if(error.code === 'P2002'){
-                    throw new ForbiddenException(`the ${error.meta.target} creadential has been taken`)
-                }
-            }
-            throw error
+  async userSignup(dto: UserSignupDto) {
+    //Generate password Hash for the user password
+    const hash = await argon.hash(dto.password);
+    // save the new user in db
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          full_name: dto.full_name,
+          user_name: dto.user_name,
+          password_hash: hash.trim(),
+          email: dto.email,
+        },
+        select: {
+          full_name: true,
+          user_name: true,
+          password_hash: false,
+          email: true,
+        },
+      });
 
+      return user;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ForbiddenException(
+            `the ${error.meta.target} creadential has been taken`,
+          );
         }
-
-        //return the saved user 
-    } 
-
-
-    async hotelSignup(dto:HotelAuthDto){
-         //Generate password Hash for the user password
-         const hash = await argon.hash(dto.password)
-        //  save the user(hotel) in db
-         
-        try {
-                    const hotel = await this.prisma.hotel.create({
-                        data: {
-                            hotel_name: dto.hotel_name,
-                            user_name: dto.user_name,
-                            password_hash:  hash.trim(),
-                            email: dto.email,
-                        },
-                        select:{
-                            hotel_name:true,
-                            user_name:true,
-                            password_hash: false,
-                            email: true,
-                        }
-                    });
-                    return hotel
-        }
-        catch(error){
-            if (error instanceof PrismaClientKnownRequestError){
-                if (error.code === 'P2002'){
-                    throw new ForbiddenException(`the ${error.meta.target} creadential has been taken`)
-                }
-            }
-            throw error
-
-
-        }
+      }
+      throw error;
     }
-    // delete user function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
-    async deleteUser(id: string): Promise<user|object> {
-        const user = await this.prisma.user.findUnique({
-            where: {
-              id: +id,
-            }})
-        if (user){
-           return await this.prisma.user.delete({where:{id:+id}} );
+
+    //return the saved user
+  }
+
+  async hotelSignup(dto: HotelSignupDto) {
+    //Generate password Hash for the user password
+    const hash = await argon.hash(dto.password);
+    //  save the user(hotel) in db
+
+    try {
+      const hotel = await this.prisma.hotel.create({
+        data: {
+          hotel_name: dto.hotel_name,
+          user_name: dto.user_name,
+          password_hash: hash.trim(),
+          email: dto.email,
+        },
+        select: {
+          hotel_name: true,
+          user_name: true,
+          password_hash: false,
+          email: true,
+        },
+      });
+      return hotel;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ForbiddenException(
+            `the ${error.meta.target} creadential has been taken`,
+          );
         }
-        return {
-            success:false,
-            msg:"data is not found"
-        }    
+      }
+      throw error;
     }
-// deleteHotel function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
-    async deleteHotel(id: string): Promise<hotel|object> {
-        const user = await this.prisma.hotel.findUnique({
-            where: {
-              id: +id,
-            }})
-        if (user){
-           return await this.prisma.hotel.delete({where:{id:+id}} );
-        }
-        return {
-            success:false,
-            msg:"data is not found"
-        }
+  }
+
+  async userSignin(dto: UserSigninDto) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: dto.email,
+      },
+    });
+    if (!user){
+      // throw Error('the email is not registered.')
+      throw new HttpException('the email is not registered',HttpStatus.FORBIDDEN);
     }
- }
-        
+
+    const passwordCorrect = await argon.verify(user.password_hash, dto.password)
+    if (passwordCorrect){
+      return 'You are logged in';
+    }
+    throw new HttpException('wrong password', HttpStatus.FORBIDDEN);
+  }
+
+  // delete user function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
+  async deleteUser(id: string): Promise<user | object> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: +id,
+      },
+    });
+    if (user) {
+      return await this.prisma.user.delete({ where: { id: +id } });
+    }
+    return {
+      success: false,
+      msg: 'data is not found',
+    };
+  }
+  // deleteHotel function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
+  async deleteHotel(id: string): Promise<hotel | object> {
+    const user = await this.prisma.hotel.findUnique({
+      where: {
+        id: +id,
+      },
+    });
+    if (user) {
+      return await this.prisma.hotel.delete({ where: { id: +id } });
+    }
+    return {
+      success: false,
+      msg: 'data is not found',
+    };
+  }
+}

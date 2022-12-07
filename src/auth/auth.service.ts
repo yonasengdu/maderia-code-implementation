@@ -1,6 +1,16 @@
-import { ForbiddenException, Injectable, Param } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { HotelAuthDto, UserAuthDto } from './dto';
+import {
+  HotelSigninDto,
+  HotelSignupDto,
+  UserSigninDto,
+  UserSignupDto,
+} from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { hotel, user } from '@prisma/client';
@@ -29,7 +39,7 @@ export class AuthService {
    * @param dto This is instance of the UserAuthDto (Data Transfer Object) that's received by a controller.
    * we know it is valid data because it has passed through nest guards.
    */
-  async userSignup(dto: UserAuthDto) {
+  async userSignup(dto: UserSignupDto) {
     //Generate password Hash for the user password
     const hash = await argon.hash(dto.password);
     // save the new user in db
@@ -76,7 +86,7 @@ export class AuthService {
    * received by a controller. we know it is valid data because it has passed through
    * nest guards.
    */
-  async hotelSignup(dto: HotelAuthDto) {
+  async hotelSignup(dto: HotelSignupDto) {
     //Generate password Hash for the user password
     const hash = await argon.hash(dto.password);
     //  save the user(hotel) in db
@@ -109,6 +119,51 @@ export class AuthService {
     }
   }
 
+  async userSignIn(dto: UserSigninDto) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: dto.email,
+      },
+    });
+    if (!user) {
+      // throw Error('the email is not registered.')
+      throw new HttpException(
+        'the email is not registered',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    const passwordCorrect = await argon.verify(
+      user.password_hash,
+      dto.password,
+    );
+    if (passwordCorrect) {
+      return 'You are logged in as a user.';
+    }
+    throw new HttpException('wrong password', HttpStatus.FORBIDDEN);
+  }
+
+  async hotelSignIn(dto: HotelSigninDto) {
+    const theHotel = await this.prisma.hotel.findUnique({
+      where: {
+        email: dto.email,
+      },
+    });
+    if (!theHotel) {
+      throw new HttpException(
+        'the email is not registered',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    const passwordCorrect = await argon.verify(
+      theHotel.password_hash,
+      dto.password,
+    );
+    if (passwordCorrect) {
+      return 'you are logged in as a hotel.';
+    }
+    throw new HttpException('wrong password', HttpStatus.FORBIDDEN);
+  }
   // delete user function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
   async deleteUser(id: string): Promise<user | object> {
     const user = await this.prisma.user.findUnique({

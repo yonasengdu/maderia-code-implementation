@@ -1,7 +1,11 @@
 import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
-import { idText } from 'typescript';
 import { AuthService } from './auth.service';
-import { HotelAuthDto, UserAuthDto } from './dto';
+import {
+  HotelSigninDto,
+  HotelSignupDto,
+  UserSigninDto,
+  UserSignupDto,
+} from './dto';
 
 /**
  * The controller class for the Auth module. This class handles endpoints related
@@ -24,7 +28,7 @@ export class AuthController {
    * post data gets validated.
    */
   @Post('userSignup')
-  userSignup(@Body() dto: UserAuthDto) {
+  userSignup(@Body() dto: UserSignupDto) {
     return this.authService.userSignup(dto);
   }
 
@@ -38,7 +42,7 @@ export class AuthController {
    * data gets validated.
    */
   @Post('hotelSignup')
-  hotelSignup(@Body() dto: HotelAuthDto) {
+  hotelSignup(@Body() dto: HotelSignupDto) {
     return this.authService.hotelSignup(dto);
   }
 
@@ -50,5 +54,15 @@ export class AuthController {
   @Delete('hotel/:id')
   deleteHotel(@Param('id') id: string) {
     return this.authService.deleteHotel(id);
+  }
+
+  @Post('hotelSignIn')
+  hotelSignIn(@Body() dto: HotelSigninDto) {
+    return this.authService.hotelSignIn(dto);
+  }
+
+  @Post('userSignIn')
+  userSignIn(@Body() dto: UserSigninDto) {
+    return this.authService.userSignIn(dto);
   }
 }

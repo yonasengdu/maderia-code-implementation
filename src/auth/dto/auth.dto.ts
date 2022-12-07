@@ -1,8 +1,8 @@
-import {IsEmail, IsNotEmpty,IsString,Length} from 'class-validator';
+import {IsEmail, IsNotEmpty, IsString, Length} from 'class-validator';
 
 
 
-export class UserAuthDto{
+export class UserSignupDto{
    
     @IsNotEmpty()
     @IsString()
@@ -20,7 +20,7 @@ export class UserAuthDto{
     @IsString()
     password:string
 }
-export class HotelAuthDto{
+export class HotelSignupDto{
     @IsNotEmpty()
     @IsString()
     hotel_name: string

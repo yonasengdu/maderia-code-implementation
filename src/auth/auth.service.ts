@@ -3,10 +3,32 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { HotelAuthDto, UserAuthDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+
+/**
+ * The AuthService class is where most of the authentication logic goes in. This
+ * includes writing data to and reading data from the database. It has methods
+ * to sign up a user/hotel, sign in a user/hotel and delete user/hotel accounts.
+ */
 @Injectable()
 export class AuthService {
+  /**
+   * We will use the PrismaService class to talk to the database, so it gets injected here. read about "dependency injection" for more.
+   * @param prisma An instance of PrismaService gets passed to the constructor. This class extends the PrismaClient class that comes with prisma. It has all the necessary methods to talk to the database.
+   */
   constructor(private prisma: PrismaService) {}
 
+  /**
+   * This method takes a valid UserAuthDto object and writes it to the database as a new user instance.
+   * Before saving the data to database, we hash the plain password using the "argon" utility. Argon hashes
+   * strings asynchronously, so this method is also asynchronous. A try-catch block will try to write to the
+   * database. If the database write fails for unique constraint violations, the PrismaService will throw
+   * appropriate errors. Currently, we catch those errors and throw them back, but what we actually need to do
+   * is return the signup html template with an error message. Additionally, now we're returning a user object
+   * upon successful signup. In future iterations, we should generate a JWT (Json Web Token), return that, and
+   * redirect to the index page.
+   * @param dto This is instance of the UserAuthDto (Data Transfer Object) that's received by a controller.
+   * we know it is valid data because it has passed through nest guards.
+   */
   async userSignup(dto: UserAuthDto) {
     //Generate password Hash for the user password
     const hash = await argon.hash(dto.password);
@@ -26,7 +48,6 @@ export class AuthService {
           email: true,
         },
       });
-
       return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -38,10 +59,23 @@ export class AuthService {
       }
       throw error;
     }
-
-    //return the saved user
   }
 
+  /**
+   * This method takes a valid HotelAuthDto object and writes it to the database
+   * as a new hotel instance. Before saving the data to database, we hash the plain
+   * password using the “argon” utility. Argon hashes strings asynchronously, so
+   * this method is also asynchronous. A try-catch block will try to write to the
+   * database. If the database write fails for unique constraint violations, the
+   * PrismaService will throw appropriate errors. Currently, we catch those errors
+   * and throw them back, but what we actually need to do is return the signup html
+   * template with an error message. Additionally, now we're returning a user object
+   * upon successful signup. In future iterations, we should generate a JWT (Json Web Token),
+   * return that, and redirect to the index page.
+   * @param dto This is instance of the UserAuthDto (Data Transfer Object) that's
+   * received by a controller. we know it is valid data because it has passed through
+   * nest guards.
+   */
   async hotelSignup(dto: HotelAuthDto) {
     //Generate password Hash for the user password
     const hash = await argon.hash(dto.password);

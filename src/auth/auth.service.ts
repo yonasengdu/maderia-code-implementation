@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
-  HotelSigninDto,
+  HotelSignInDto,
   HotelSignupDto,
-  UserSigninDto,
+  UserSignInDto,
   UserSignupDto,
 } from './dto';
 import * as argon from 'argon2';
@@ -119,7 +119,7 @@ export class AuthService {
     }
   }
 
-  async userSignIn(dto: UserSigninDto) {
+  async userSignIn(dto: UserSignInDto) {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -143,7 +143,7 @@ export class AuthService {
     throw new HttpException('wrong password', HttpStatus.FORBIDDEN);
   }
 
-  async hotelSignIn(dto: HotelSigninDto) {
+  async hotelSignIn(dto: HotelSignInDto) {
     const theHotel = await this.prisma.hotel.findUnique({
       where: {
         email: dto.email,
@@ -167,12 +167,12 @@ export class AuthService {
   // delete user function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
   async deleteUser(id: string): Promise<user> {
     const user = await this.prisma.user.findUnique({
-        where: {
-          id: +id,
-        },
-      });
-    if (!user){
-        throw new ForbiddenException('invalid credentials');
+      where: {
+        id: +id,
+      },
+    });
+    if (!user) {
+      throw new ForbiddenException('invalid credentials');
     }
     const deletedUser = await this.prisma.user.delete({ where: { id: +id } });
     delete deletedUser.password_hash;
@@ -181,20 +181,16 @@ export class AuthService {
 
   // deleteHotel function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
   async deleteHotel(id: string): Promise<hotel> {
-        const hotel = await this.prisma.hotel.findUnique({
-            where: {
-              id: +id,
-            },
-          });
-        if (!hotel){
-            throw new ForbiddenException('invalid credentials');
-            }
-        const deletedHotel = await this.prisma.hotel.delete({ where: { id: +id } });
-        delete deletedHotel.password_hash;
-        return deletedHotel;
-      }
-
+    const hotel = await this.prisma.hotel.findUnique({
+      where: {
+        id: +id,
+      },
+    });
+    if (!hotel) {
+      throw new ForbiddenException('invalid credentials');
+    }
+    const deletedHotel = await this.prisma.hotel.delete({ where: { id: +id } });
+    delete deletedHotel.password_hash;
+    return deletedHotel;
+  }
 }
-    
-    
-

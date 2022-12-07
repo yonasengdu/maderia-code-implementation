@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
-  HotelSigninDto,
+  HotelSignInDto,
   HotelSignupDto,
-  UserSigninDto,
+  UserSignInDto,
   UserSignupDto,
 } from './dto';
 
@@ -57,12 +57,12 @@ export class AuthController {
   }
 
   @Post('hotelSignIn')
-  hotelSignIn(@Body() dto: HotelSigninDto) {
+  hotelSignIn(@Body() dto: HotelSignInDto) {
     return this.authService.hotelSignIn(dto);
   }
 
   @Post('userSignIn')
-  userSignIn(@Body() dto: UserSigninDto) {
+  userSignIn(@Body() dto: UserSignInDto) {
     return this.authService.userSignIn(dto);
   }
 }

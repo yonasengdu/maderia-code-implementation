@@ -1,9 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, Param } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HotelAuthDto, UserAuthDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-
+import { hotel, user } from '@prisma/client';
 /**
  * The AuthService class is where most of the authentication logic goes in. This
  * includes writing data to and reading data from the database. It has methods
@@ -107,5 +107,36 @@ export class AuthService {
       }
       throw error;
     }
+  }
+
+  // delete user function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
+  async deleteUser(id: string): Promise<user | object> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: +id,
+      },
+    });
+    if (user) {
+      return await this.prisma.user.delete({ where: { id: +id } });
+    }
+    return {
+      success: false,
+      msg: 'data is not found',
+    };
+  }
+  // deleteHotel function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
+  async deleteHotel(id: string): Promise<hotel | object> {
+    const user = await this.prisma.hotel.findUnique({
+      where: {
+        id: +id,
+      },
+    });
+    if (user) {
+      return await this.prisma.hotel.delete({ where: { id: +id } });
+    }
+    return {
+      success: false,
+      msg: 'data is not found',
+    };
   }
 }

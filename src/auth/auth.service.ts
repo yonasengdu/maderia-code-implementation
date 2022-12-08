@@ -14,6 +14,13 @@ import {
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { hotel, user } from '@prisma/client';
+import { JwtService } from '@nestjs/jwt';
+
+enum ClientType {
+  hotel,
+  user,
+}
+
 /**
  * The AuthService class is where most of the authentication logic goes in. This
  * includes writing data to and reading data from the database. It has methods
@@ -25,7 +32,8 @@ export class AuthService {
    * We will use the PrismaService class to talk to the database, so it gets injected here. read about "dependency injection" for more.
    * @param prisma An instance of PrismaService gets passed to the constructor. This class extends the PrismaClient class that comes with prisma. It has all the necessary methods to talk to the database.
    */
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private jwt: JwtService) {
+  }
 
   /**
    * This method takes a valid UserAuthDto object and writes it to the database as a new user instance.
@@ -51,14 +59,11 @@ export class AuthService {
           password_hash: hash.trim(),
           email: dto.email,
         },
-        select: {
-          full_name: true,
-          user_name: true,
-          password_hash: false,
-          email: true,
-        },
       });
-      return user;
+      // here, we're returning a token (jwt) as soon as users register.
+      // this means that users automatically sign in as they sign up.
+      // @ts-ignore
+      return await this.signToken(user.id, user.email, ClientType.user);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -99,14 +104,10 @@ export class AuthService {
           password_hash: hash.trim(),
           email: dto.email,
         },
-        select: {
-          hotel_name: true,
-          user_name: true,
-          password_hash: false,
-          email: true,
-        },
       });
-      return hotel;
+      // we sign and return a token upon successful sign-up
+      // @ts-ignore
+      return await this.signToken(hotel.id, hotel.email, ClientType.hotel);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -132,38 +133,40 @@ export class AuthService {
         HttpStatus.FORBIDDEN,
       );
     }
-
     const passwordCorrect = await argon.verify(
       user.password_hash,
       dto.password,
     );
     if (passwordCorrect) {
-      return 'You are logged in as a user.';
+      // we sign and return a token upon successful sign-in
+      return await this.signToken(user.id, user.email, ClientType.user);
     }
     throw new HttpException('wrong password', HttpStatus.FORBIDDEN);
   }
 
   async hotelSignIn(dto: HotelSignInDto) {
-    const theHotel = await this.prisma.hotel.findUnique({
+    const hotel = await this.prisma.hotel.findUnique({
       where: {
         email: dto.email,
       },
     });
-    if (!theHotel) {
+    if (!hotel) {
       throw new HttpException(
         'the email is not registered',
         HttpStatus.FORBIDDEN,
       );
     }
     const passwordCorrect = await argon.verify(
-      theHotel.password_hash,
+      hotel.password_hash,
       dto.password,
     );
     if (passwordCorrect) {
-      return 'you are logged in as a hotel.';
+      // we sign and return a jwt upon successful sign-in
+      return await this.signToken(hotel.id, hotel.email, ClientType.hotel);
     }
     throw new HttpException('wrong password', HttpStatus.FORBIDDEN);
   }
+
   // delete user function first checks if there is a row with given id in our database.if there is a value with the given id, it will be deleted, if not it will return null
   async deleteUser(id: string): Promise<user> {
     const user = await this.prisma.user.findUnique({
@@ -192,5 +195,27 @@ export class AuthService {
     const deletedHotel = await this.prisma.hotel.delete({ where: { id: +id } });
     delete deletedHotel.password_hash;
     return deletedHotel;
+  }
+
+  async signToken(
+    id: number,
+    email: string,
+    clientType: ClientType,
+  ): Promise<{ access_token: string }> {
+    const tokenData = {
+      // 'sub' means id. (it's a convention in the jwt environment)
+      sub: id,
+      email: email,
+      client_type: clientType,
+    };
+    const token = this.jwt.signAsync(tokenData, {
+      //TODO: change the expiration time to make it realistic.
+      expiresIn: '1h',
+      //TODO: pass the secret string with environment variables.
+      secret: 'multitude lsd the weeknd',
+    });
+    return {
+      access_token: await token,
+    };
   }
 }

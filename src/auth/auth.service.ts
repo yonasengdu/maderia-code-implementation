@@ -16,9 +16,9 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { hotel, user } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 
-enum ClientType {
-  hotel,
+export enum ClientType {
   user,
+  hotel,
 }
 
 /**
@@ -212,7 +212,7 @@ export class AuthService {
       //TODO: change the expiration time to make it realistic.
       expiresIn: '1h',
       //TODO: pass the secret string with environment variables.
-      secret: 'multitude lsd the weeknd',
+      secret: 'the way we do things',
     });
     return {
       access_token: await token,

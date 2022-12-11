@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Render } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   HotelSignInDto,
@@ -46,15 +46,6 @@ export class AuthController {
     return this.authService.hotelSignup(dto);
   }
 
-  @Delete('user/:id')
-  deleteUser(@Param('id') id: string) {
-    return this.authService.deleteUser(id);
-  }
-
-  @Delete('hotel/:id')
-  deleteHotel(@Param('id') id: string) {
-    return this.authService.deleteHotel(id);
-  }
 
   @Post('hotelSignIn')
   hotelSignIn(@Body() dto: HotelSignInDto) {
@@ -65,4 +56,29 @@ export class AuthController {
   userSignIn(@Body() dto: UserSignInDto) {
     return this.authService.userSignIn(dto);
   }
+
+  @Get('signin')
+  @Render('sign_in')
+  signInPage(){
+    return {}
+  }
+
+  @Get('signup')
+  @Render('sign_up')
+  signUpPage(){
+    return {}
+  }
+
+
+  @Delete('user/:id')
+  deleteUser(@Param('id') id: string) {
+    return this.authService.deleteUser(id);
+  }
+
+  @Delete('hotel/:id')
+  deleteHotel(@Param('id') id: string) {
+    return this.authService.deleteHotel(id);
+  }
+
+  
 }

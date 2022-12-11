@@ -4,8 +4,9 @@ import { Controller, Get, Render } from '@nestjs/common';
 export class SurfaceController {
 
     @Get('')
+    @Render('front')
     front() {
-        return "this is the front page that everone looks at."
+        return {message: "this is the front page that everone looks at."}
     }
 
 }

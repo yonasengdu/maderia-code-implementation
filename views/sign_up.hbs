@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>register as a user</h2>
+    <form action="/auth/usersignup" method="post">
+    <input type="text" name="full_name" id="full_name" placeholder="your full name">
+    <input type="text" name="user_name" id="user_name" placeholder="create a user name">
+    <input type="text" name="email" id="email" placeholder="your email">
+    <input type="password" name="password" id="password", placeholder="your password">
+    <input type="submit" value="submit">
+    </form>
+
+    <h2>register as a hotel</h2>
+    <form action="/auth/hotelsignup" method="post">
+    <input type="text" name="hotel_name" id="hotel_name" placeholder="The name of your hotel">
+    <input type="text" name="user_name" id="user_name" placeholder="create a user name">
+    <input type="text" name="email" id="email" placeholder="your email">
+    <input type="password" name="password" id="password", placeholder="your password">
+    <input type="submit" value="submit">
+    </form>
+</body>
+</html>

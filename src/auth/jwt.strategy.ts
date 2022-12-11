@@ -2,6 +2,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { hotel } from '@prisma/client';
 
 /**
  * the JwtStrategy class will be used by the guard on protected endpoints to
@@ -26,24 +27,26 @@ export class JwtStrategy extends PassportStrategy(
    * when the strategy is used, this method gets called and the 'decoded' jwt will be passed to it
    * @param payload this is the decoded jwt that we get from the guard
    */
-  validate(payload: any) {
-    const isHotel = payload.client_type == 1;
+  async validate(payload: any) {
+    const isHotel: boolean = payload.client_type == 1;
     // we check if the dto is that of a user or a hotel, fetch the client from the database and
     // return it (so that it gets appended on the request for the guarded controller like 'request.user')
     if (isHotel) {
-      const hotel = this.prisma.hotel.findUnique({
+      const hotel: hotel = await this.prisma.hotel.findUnique({
         where: {
           id: payload.sub,
         },
       });
+      delete hotel.password_hash
       // whatever this method returns, it gets appended on the request object as a 'user' (request.user)
       return hotel;
     } else {
-      const user = this.prisma.user.findUnique({
+      const user = await this.prisma.user.findUnique({
         where: {
           id: payload.sub,
         },
       });
+      delete user.password_hash
       // whatever this method returns, it gets appended on the request object as a user (request.user)
       return user;
     }

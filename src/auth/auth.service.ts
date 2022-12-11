@@ -8,8 +8,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import {
   HotelSignInDto,
   HotelSignupDto,
+  PasswordResetDto,
   UserSignInDto,
   UserSignupDto,
+  UserUpdateDto,
 } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
@@ -217,5 +219,47 @@ export class AuthService {
     return {
       access_token: await token,
     };
+  }
+
+  /**
+   * This controller handles updates for user_name, full_name and email. Password updates are
+   * handled by the 'changePassword' method.
+   * @param userId The id of the user that is being updated. (the id won't be updated)
+   * @param newUserInfo Instance of UserUpdateDto. It has user_name, full_name, and email in it.
+   * @returns A user object with the given id after updating it.
+   */
+  async updateUser(userId: number, newUserInfo: UserUpdateDto) {
+    // we just call update on prisma client and give it the id and updated values.
+    const updatedUser: user  = await this.prisma.user.update({
+      where: {id: userId},
+      data: {
+        full_name: newUserInfo.full_name,
+        user_name: newUserInfo.user_name,
+        email: newUserInfo.email,
+      },
+    });
+    // we should remove the password hash before returning the updated user
+    delete updatedUser.password_hash;
+    return updatedUser
+  }
+
+  async changeUserPassword(userId: number, passwordInfo: PasswordResetDto) {
+    let user: user = await this.prisma.user.findUnique({
+      where: {
+        id: userId
+      }
+    })
+    const oldPasswordValid: boolean = await argon.verify(user.password_hash, passwordInfo.old_password);
+    if(!oldPasswordValid) {
+      throw new ForbiddenException('the old password is not correct.')
+    }
+    user = await this.prisma.user.update({
+      where: {id: userId},
+      data: {
+        password_hash: await argon.hash(passwordInfo.new_password)
+      }
+    })
+    delete user.password_hash
+    return user
   }
 }

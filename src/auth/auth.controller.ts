@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Render } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Render, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   HotelSignInDto,
   HotelSignupDto,
+  PasswordResetDto,
   UserSignInDto,
   UserSignupDto,
+  UserUpdateDto,
 } from './dto';
+import { JwtGuard } from './jwt.guard';
 
 /**
  * The controller class for the Auth module. This class handles endpoints related
@@ -80,5 +83,35 @@ export class AuthController {
     return this.authService.deleteHotel(id);
   }
 
-  
+  /**
+   * This controller handles updating of profile information for users.
+   * @param req the request objext will be passed to the controller method (by the freamwork)
+   * @param newUserInfo this instance of UserUpdateDto will contain the new user_name, email, and full_name of the user
+   * that should go in place of (replace) the old ones.
+   * @returns returns the newly updated user object.
+   */
+  @Post('userUpdate')
+  @UseGuards(JwtGuard)
+  async updateUser(@Req() req:any, @Body() newUserInfo: UserUpdateDto) {
+    const updatedUser = await this.authService.updateUser(req.user.id, newUserInfo)
+    return {user: updatedUser}
+  }
+
+  /**
+   * This controller handles password reset for users.
+   * @param req the request objext will be passed to the controller method (by the freamwork)
+   * @param passwordInfo this instanceo of PasswordResetDto contains the old password (for verification purposes)
+   * and the new password that should replace the old one.
+   * @returns the user object whose password has now been changed.
+   */
+  @Post('userPasswordReset')
+  @UseGuards(JwtGuard)
+  async changeUserPassword(@Req() req:any, @Body() passwordInfo: PasswordResetDto) {
+    const user = await this.authService.changeUserPassword(req.user.id, passwordInfo)
+    return {
+      user,
+    }
+  }
 }
+
+

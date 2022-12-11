@@ -51,3 +51,27 @@ export class HotelSignInDto {
   @IsString()
   password: string;
 }
+
+export class UserUpdateDto {
+  @IsNotEmpty()
+  @IsString()
+  full_name: string;
+  @IsNotEmpty()
+  @IsString()
+  user_name: string;
+  @IsEmail()
+  @IsNotEmpty()
+  @IsString()
+  email: string;
+}
+
+export class PasswordResetDto {
+  @Length(6)
+  @IsNotEmpty()
+  @IsString()
+  old_password: string;
+  @Length(6)
+  @IsNotEmpty()
+  @IsString()
+  new_password: string;
+}

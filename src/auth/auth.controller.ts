@@ -73,14 +73,20 @@ export class AuthController {
   }
 
 
-  @Delete('user/:id')
-  deleteUser(@Param('id') id: string) {
-    return this.authService.deleteUser(id);
+  @Delete('user')
+  //@UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
+  async deleteUser(@Req() req:any) {
+    const deletedUser = await this.authService.deleteUser(req.user.id)
+    return {user: deletedUser}
   }
 
-  @Delete('hotel/:id')
-  deleteHotel(@Param('id') id: string) {
-    return this.authService.deleteHotel(id);
+  @Delete('hotel')
+  //@UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
+  async deleteHotel(@Req() req:any) {
+    const deletedHotel = await this.authService.deleteHotel(req.user.id)
+    return {user: deletedHotel}
   }
 
   /**

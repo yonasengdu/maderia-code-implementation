@@ -73,7 +73,7 @@ export class AuthController {
   }
 
 
-  @Delete('user')
+  @Delete('delete')
   //@UseGuards(JwtGuard)
   @UseGuards(JwtGuard)
   async deleteUser(@Req() req:any) {

@@ -1,7 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from '../prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { hotel } from '@prisma/client';
 
 /**
@@ -37,6 +37,13 @@ export class JwtStrategy extends PassportStrategy(
           id: payload.sub,
         },
       });
+      //if the value with specific id is not found in the database it should raise an exception
+      if (!hotel){
+        throw new ForbiddenException(
+          `there is no match in the database`,
+        );
+      }
+      
       delete hotel.password_hash
       // whatever this method returns, it gets appended on the request object as a 'user' (request.user)
       return hotel;
@@ -46,6 +53,11 @@ export class JwtStrategy extends PassportStrategy(
           id: payload.sub,
         },
       });
+      //if the value with specific id is not found in the database it should raise an exception
+      if (!user){
+        throw new ForbiddenException(
+          `there is no match in the database`,
+        );}
       delete user.password_hash
       // whatever this method returns, it gets appended on the request object as a user (request.user)
       return user;

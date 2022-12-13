@@ -103,6 +103,13 @@ export class AuthController {
     return {user: updatedUser}
   }
 
+  // @Post('hotelUpdate')
+  // @UseGuards(JwtGuard)
+  // async updateHotel(@Req() req:any, @Body() newHotelInfo: HotelUpdateDto) {
+  //   const updatedHotel = await this.authService.updateHotel(req.user.id, newHotelInfo)
+  //   return {user: updatedHotel}
+  // }
+
   /**
    * This controller handles password reset for users.
    * @param req the request objext will be passed to the controller method (by the freamwork)

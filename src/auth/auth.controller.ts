@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Render, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import {
   HotelSignInDto,
@@ -31,8 +32,12 @@ export class AuthController {
    * post data gets validated.
    */
   @Post('userSignup')
-  userSignup(@Body() dto: UserSignupDto) {
-    return this.authService.userSignup(dto);
+  async userSignup(@Body() dto: UserSignupDto, @Res({ passthrough: true }) res: Response) {
+    const token = await this.authService.userSignup(dto);
+    // we set a cookie in the response object that will be saved in the browser and
+    // sent back with every relevant request. (now the client is logged in)
+    res.cookie('token', token)
+    return 'sign-up successful'
   }
 
   /**
@@ -45,19 +50,37 @@ export class AuthController {
    * data gets validated.
    */
   @Post('hotelSignup')
-  hotelSignup(@Body() dto: HotelSignupDto) {
-    return this.authService.hotelSignup(dto);
+  async hotelSignup(@Body() dto: HotelSignupDto, @Res({ passthrough: true}) res: Response) {
+    const token = await this.authService.hotelSignup(dto)
+    // we set a cookie in the response object that will be saved in the browser and
+    // sent back with every relevant request. (now the client is logged in)
+    res.cookie('token', token)
+    return 'sign-up successful'
   }
 
 
   @Post('hotelSignIn')
-  hotelSignIn(@Body() dto: HotelSignInDto) {
-    return this.authService.hotelSignIn(dto);
+  async hotelSignIn(@Body() dto: HotelSignInDto, @Res({ passthrough: true }) res: Response) {
+    const token = await this.authService.hotelSignIn(dto)
+    // we set a cookie in the response object that will be saved in the browser and
+    // sent back with every relevant request. (now the client is logged in)
+    res.cookie('token', token)
+    return "sign-in successful"
   }
 
   @Post('userSignIn')
-  userSignIn(@Body() dto: UserSignInDto) {
-    return this.authService.userSignIn(dto);
+  async userSignIn(@Body() dto: UserSignInDto, @Res({ passthrough: true }) res: Response) {
+    const token = await this.authService.userSignIn(dto)
+    // we set a cookie in the response object that will be saved in the browser and
+    // sent back with every relevant request. (now the client is logged in)
+    res.cookie('token', token)
+    return 'sign-in successful'
+  }
+
+  @Get('logout')
+  logout(@Res( { passthrough: true }) res: Response) {
+    res.cookie('token', '')
+    return "logut successful"
   }
 
   @Get('signin')

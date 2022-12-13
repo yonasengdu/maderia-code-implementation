@@ -206,22 +206,20 @@ export class AuthService {
     id: number,
     email: string,
     clientType: ClientType,
-  ): Promise<{ access_token: string }> {
+  ): Promise<string> {
     const tokenData = {
       // 'sub' means id. (it's a convention in the jwt environment)
       sub: id,
       email: email,
       client_type: clientType,
     };
-    const token = this.jwt.signAsync(tokenData, {
+    const token = await this.jwt.signAsync(tokenData, {
       //TODO: change the expiration time to make it realistic.
       expiresIn: '1h',
       //TODO: pass the secret string with environment variables.
       secret: 'the way we do things',
     });
-    return {
-      access_token: await token,
-    };
+    return token
   }
 
   /**

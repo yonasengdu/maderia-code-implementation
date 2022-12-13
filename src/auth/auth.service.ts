@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import {
   HotelSignInDto,
   HotelSignupDto,
@@ -30,6 +30,9 @@ export enum ClientType {
  */
 @Injectable()
 export class AuthService {
+  // updateHotel( id: any, newUserInfo: HotelUpdateDto ) {
+  //   throw new Error( 'Method not implemented.' );
+  // }
   /**
    * We will use the PrismaService class to talk to the database, so it gets injected here. read about "dependency injection" for more.
    * @param prisma An instance of PrismaService gets passed to the constructor. This class extends the PrismaClient class that comes with prisma. It has all the necessary methods to talk to the database.
@@ -240,6 +243,21 @@ export class AuthService {
     delete updatedUser.password_hash;
     return updatedUser
   }
+
+  // async updateHotel(hotelId: number, newHotelInfo: HotelUpdateDto) {
+  //   // we just call update on prisma client and give it the id and updated values.
+  //   const updatedHotel: hotel  = await this.prisma.hotel.update({
+  //     where: {id: hotelId},
+  //     data: {
+  //       hotel_name: newHotelInfo.hotel_name,
+  //       user_name: newHotelInfo.user_name,
+  //       email: newHotelInfo.email,
+  //     },
+  //   });
+  //   // we should remove the password hash before returning the updated user
+  //   delete updatedHotel.password_hash;
+  //   return updatedHotel;
+  // }
 
   async changeUserPassword(userId: number, passwordInfo: PasswordResetDto) {
     let user: user = await this.prisma.user.findUnique({

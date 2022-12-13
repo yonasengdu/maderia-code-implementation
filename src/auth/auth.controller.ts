@@ -77,6 +77,12 @@ export class AuthController {
     return 'sign-in successful'
   }
 
+  @Get('logout')
+  logout(@Res( { passthrough: true }) res: Response) {
+    res.cookie('token', '')
+    return "logut successful"
+  }
+
   @Get('signin')
   @Render('sign_in')
   signInPage(){

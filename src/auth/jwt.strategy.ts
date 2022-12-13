@@ -3,6 +3,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { hotel } from '@prisma/client';
+import { Request } from 'express';
 
 /**
  * the JwtStrategy class will be used by the guard on protected endpoints to
@@ -11,16 +12,26 @@ import { hotel } from '@prisma/client';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(
   Strategy,
-  'jwt', // this is a key thing that identifies this strategy as a jwt validation strategy
 ) {
   constructor(
     private prisma: PrismaService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
+      jwtFromRequest: ExtractJwt.fromExtractors([JwtStrategy.extractJWT,]),
       secretOrKey: 'the way we do things',
     });
+  }
+
+  /**
+   * This method is used by the strategy to extract the jwt from the request before validation
+   * @param req this is the request
+   * @returns the token string (if it exists in the request) or null (in which case validation fails)
+   */
+  private static extractJWT(req: Request): string | null {
+    if (req.cookies && 'token' in req.cookies) {
+      return req.cookies.token;
+    }
+    return null;
   }
 
   /**

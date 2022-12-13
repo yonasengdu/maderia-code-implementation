@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 
 
 async function bootstrap() {
@@ -15,6 +16,8 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+
+  app.use(cookieParser());  // this allows for storing into, and parsing a jwt from a cookie
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));

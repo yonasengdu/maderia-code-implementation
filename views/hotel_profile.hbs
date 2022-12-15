@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>You are {{ hotel.hotel_name }}. You are logged in as a hotel.</p>
+    <h2>Your profile information</h2>
+    <form action="/auth/hotelUpdate", method="post">
+        <!--the names of input fields in this form should match the names in the HotelUpdateDto -->
+        <label for="full_name">hotel name:</label>
+        <input type="text" name="hotel_name" id="hotel_name" value="{{ hotel.hotel_name }}"><br>
+        <label for="user_name">username:</label>
+        <input type="text" name="user_name" id="user_name" value="{{ hotel.user_name }}"><br>
+        <label for="email">email:</label>
+        <input type="text" name="email" id="email" value="{{ hotel.email }}">
+        <input type="submit" value="change profile">
+    </form>
+    <hr>
+    <h2>Reset your password?</h2>
+    <form action="/auth/hotelPasswordReset", method="post">
+    <!-- the names of in this form should match the names in the PasswordResetDto -->
+        <input type="password" name="old_password" id="old_password" placeholder="your old password"><br>
+        <input type="text" name="new_password" id="new_password" placeholder="your new password">
+        <input type="submit" value="change password">
+    </form>
+    <hr>
+    <a href="">delete your account</a>
+</body>
+</html>

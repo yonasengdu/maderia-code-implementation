@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import {
   HotelSignInDto,
   HotelSignupDto,
+  HotelUpdateDto,
   PasswordResetDto,
   UserSignInDto,
   UserSignupDto,
@@ -77,7 +78,7 @@ export class AuthController {
     return 'sign-in successful'
   }
 
-  @Get('logout')
+  @Get('signout')
   logout(@Res( { passthrough: true }) res: Response) {
     res.cookie('token', '')
     return "logut successful"
@@ -96,7 +97,7 @@ export class AuthController {
   }
 
 
-  @Delete('delete')
+  @Delete('deleteUser')
   //@UseGuards(JwtGuard)
   @UseGuards(JwtGuard)
   async deleteUser(@Req() req:any) {
@@ -104,7 +105,7 @@ export class AuthController {
     return {user: deletedUser}
   }
 
-  @Delete('hotel')
+  @Delete('deleteHotel')
   //@UseGuards(JwtGuard)
   @UseGuards(JwtGuard)
   async deleteHotel(@Req() req:any) {
@@ -126,16 +127,16 @@ export class AuthController {
     return {user: updatedUser}
   }
 
-  // @Post('hotelUpdate')
-  // @UseGuards(JwtGuard)
-  // async updateHotel(@Req() req:any, @Body() newHotelInfo: HotelUpdateDto) {
-  //   const updatedHotel = await this.authService.updateHotel(req.user.id, newHotelInfo)
-  //   return {user: updatedHotel}
-  // }
+  @Post('hotelUpdate')
+  @UseGuards(JwtGuard)
+  async updateHotel(@Req() req:any, @Body() newHotelInfo: HotelUpdateDto) {
+    const updatedHotel = await this.authService.updateHotel(req.user.id, newHotelInfo)
+    return {user: updatedHotel}
+  }
 
   /**
    * This controller handles password reset for users.
-   * @param req the request objext will be passed to the controller method (by the freamwork)
+   * @param req the request object will be passed to the controller method (by the freamwork)
    * @param passwordInfo this instanceo of PasswordResetDto contains the old password (for verification purposes)
    * and the new password that should replace the old one.
    * @returns the user object whose password has now been changed.
@@ -146,6 +147,22 @@ export class AuthController {
     const user = await this.authService.changeUserPassword(req.user.id, passwordInfo)
     return {
       user,
+    }
+  }
+
+  /**
+   * This controller handles password reset for hotels.
+   * @param req the request object will be passed to the controller method (by the freamwork)
+   * @param passwordInfo this instance of PasswordResetDto contains the old password (for verification purposes)
+   * and the new password that should replace the old one.
+   * @returns the hotel object whose password has now been changed.
+   */
+  @Post('hotelPasswordReset')
+  @UseGuards(JwtGuard)
+  async changeHotelPassword(@Req() req:any, @Body() passwordInfo: PasswordResetDto) {
+    const hotel = await this.authService.changeHotelPassword(req.user.id, passwordInfo)
+    return {
+      hotel,
     }
   }
 }

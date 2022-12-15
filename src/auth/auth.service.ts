@@ -8,6 +8,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import {
   HotelSignInDto,
   HotelSignupDto,
+  HotelUpdateDto,
   PasswordResetDto,
   UserSignInDto,
   UserSignupDto,
@@ -244,20 +245,20 @@ export class AuthService {
     return updatedUser
   }
 
-  // async updateHotel(hotelId: number, newHotelInfo: HotelUpdateDto) {
-  //   // we just call update on prisma client and give it the id and updated values.
-  //   const updatedHotel: hotel  = await this.prisma.hotel.update({
-  //     where: {id: hotelId},
-  //     data: {
-  //       hotel_name: newHotelInfo.hotel_name,
-  //       user_name: newHotelInfo.user_name,
-  //       email: newHotelInfo.email,
-  //     },
-  //   });
-  //   // we should remove the password hash before returning the updated user
-  //   delete updatedHotel.password_hash;
-  //   return updatedHotel;
-  // }
+  async updateHotel(hotelId: number, newHotelInfo: HotelUpdateDto) {
+    // we just call update on prisma client and give it the id and updated values.
+    const updatedHotel: hotel  = await this.prisma.hotel.update({
+      where: {id: hotelId},
+      data: {
+        hotel_name: newHotelInfo.hotel_name,
+        user_name: newHotelInfo.user_name,
+        email: newHotelInfo.email,
+      },
+    });
+    // we should remove the password hash before returning the updated user
+    delete updatedHotel.password_hash;
+    return updatedHotel;
+  }
 
   async changeUserPassword(userId: number, passwordInfo: PasswordResetDto) {
     let user: user = await this.prisma.user.findUnique({
@@ -265,6 +266,11 @@ export class AuthService {
         id: userId
       }
     })
+    if(!user) {
+      // if there is no such user, it might be due to a deleted-user jwt or hotels making the request.
+      // so throw an exception
+      throw new ForbiddenException('No user found with the specified credentials')
+    }
     const oldPasswordValid: boolean = await argon.verify(user.password_hash, passwordInfo.old_password);
     if(!oldPasswordValid) {
       throw new ForbiddenException('the old password is not correct.')
@@ -277,5 +283,30 @@ export class AuthService {
     })
     delete user.password_hash
     return user
+  }
+
+  async changeHotelPassword(hotelId: number, passwordInfo: PasswordResetDto) {
+    let hotel: hotel = await this.prisma.hotel.findUnique({
+      where: {
+        id: hotelId
+      }
+    })
+    if(!hotel) {
+      // if there is no such hotel, it might be due to a deleted-hotel jwt or users making the request.
+      // so throw an exception
+      throw new ForbiddenException('No hotel found with the specified credentials')
+    }
+    const oldPasswordValid: boolean = await argon.verify(hotel.password_hash, passwordInfo.old_password);
+    if(!oldPasswordValid) {
+      throw new ForbiddenException('the old password is not correct.')
+    }
+    hotel = await this.prisma.hotel.update({
+      where: {id: hotelId},
+      data: {
+        password_hash: await argon.hash(passwordInfo.new_password)
+      }
+    })
+    delete hotel.password_hash
+    return hotel
   }
 }

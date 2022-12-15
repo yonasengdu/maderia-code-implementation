@@ -80,17 +80,6 @@ export class UserUpdateDto {
   email: string;
 }
 
-export class PasswordResetDto {
-  @Length(6)
-  @IsNotEmpty()
-  @IsString()
-  old_password: string;
-  @Length(6)
-  @IsNotEmpty()
-  @IsString()
-  new_password: string;
-}
-
 export class HotelUpdateDto {
   @IsNotEmpty()
   @IsString()
@@ -102,8 +91,19 @@ export class HotelUpdateDto {
   @IsNotEmpty()
   @IsString()
   email: string;
+};
+
+/**
+ * This dto is used both for hotel-password-reset and user-password-reset features.
+ */
+export class PasswordResetDto {
   @Length(6)
   @IsNotEmpty()
   @IsString()
-  password: string;
-};
+  old_password: string;
+  @Length(6)
+  @IsNotEmpty()
+  @IsString()
+  new_password: string;
+}
+

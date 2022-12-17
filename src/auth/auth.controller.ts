@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import {
@@ -33,12 +33,14 @@ export class AuthController {
    * post data gets validated.
    */
   @Post('userSignup')
+  @Redirect()
   async userSignup(@Body() dto: UserSignupDto, @Res({ passthrough: true }) res: Response) {
     const token = await this.authService.userSignup(dto);
     // we set a cookie in the response object that will be saved in the browser and
     // sent back with every relevant request. (now the client is logged in)
     res.cookie('token', token)
-    return 'sign-up successful'
+    // if sign-up is successful, we redirect to the index page.
+    return {url: '/client/index'}
   }
 
   /**
@@ -51,37 +53,45 @@ export class AuthController {
    * data gets validated.
    */
   @Post('hotelSignup')
+  @Redirect()
   async hotelSignup(@Body() dto: HotelSignupDto, @Res({ passthrough: true}) res: Response) {
     const token = await this.authService.hotelSignup(dto)
     // we set a cookie in the response object that will be saved in the browser and
     // sent back with every relevant request. (now the client is logged in)
     res.cookie('token', token)
-    return 'sign-up successful'
+    // if sign-up is successful, we redirect to the index page.
+    return {url: '/client/index'}
   }
 
 
   @Post('hotelSignIn')
+  @Redirect()
   async hotelSignIn(@Body() dto: HotelSignInDto, @Res({ passthrough: true }) res: Response) {
     const token = await this.authService.hotelSignIn(dto)
     // we set a cookie in the response object that will be saved in the browser and
     // sent back with every relevant request. (now the client is logged in)
     res.cookie('token', token)
-    return "sign-in successful"
+    // if sign-in is successful, we redirect to the index page.
+    return {url: '/client/index'}
   }
 
   @Post('userSignIn')
+  @Redirect()
   async userSignIn(@Body() dto: UserSignInDto, @Res({ passthrough: true }) res: Response) {
     const token = await this.authService.userSignIn(dto)
     // we set a cookie in the response object that will be saved in the browser and
     // sent back with every relevant request. (now the client is logged in)
     res.cookie('token', token)
-    return 'sign-in successful'
+    // if sign-in is successful, we redirect to the index page.
+    return {url: '/client/index'}
   }
 
   @Get('signout')
+  @Redirect()
   logout(@Res( { passthrough: true }) res: Response) {
     res.cookie('token', '')
-    return "logut successful"
+    // apon signing out, we redirect to the front page.
+    return {url: '/'}
   }
 
   @Get('signin')
@@ -98,15 +108,17 @@ export class AuthController {
 
 
   @Delete('deleteUser')
-  //@UseGuards(JwtGuard)
+  @Redirect()
   @UseGuards(JwtGuard)
-  async deleteUser(@Req() req:any) {
+  async deleteUser(@Req() req:any, @Res( { passthrough: true }) res: Response) {
     const deletedUser = await this.authService.deleteUser(req.user.id)
-    return {user: deletedUser}
+    // we also need to sign the user out.
+    res.cookie('token', '')
+    // then redirect to the front page
+    return {url: '/'}
   }
 
   @Delete('deleteHotel')
-  //@UseGuards(JwtGuard)
   @UseGuards(JwtGuard)
   async deleteHotel(@Req() req:any) {
     const deletedHotel = await this.authService.deleteHotel(req.user.id)
@@ -121,17 +133,19 @@ export class AuthController {
    * @returns returns the newly updated user object.
    */
   @Post('userUpdate')
+  @Redirect()
   @UseGuards(JwtGuard)
   async updateUser(@Req() req:any, @Body() newUserInfo: UserUpdateDto) {
     const updatedUser = await this.authService.updateUser(req.user.id, newUserInfo)
-    return {user: updatedUser}
+    return {url: '/auth/profile'}
   }
 
   @Post('hotelUpdate')
+  @Redirect()
   @UseGuards(JwtGuard)
   async updateHotel(@Req() req:any, @Body() newHotelInfo: HotelUpdateDto) {
     const updatedHotel = await this.authService.updateHotel(req.user.id, newHotelInfo)
-    return {user: updatedHotel}
+    return {url: '/auth/profile'}
   }
 
   /**
@@ -163,12 +177,11 @@ export class AuthController {
    * @returns the user object whose password has now been changed.
    */
   @Post('userPasswordReset')
+  @Redirect()
   @UseGuards(JwtGuard)
   async changeUserPassword(@Req() req:any, @Body() passwordInfo: PasswordResetDto) {
     const user = await this.authService.changeUserPassword(req.user.id, passwordInfo)
-    return {
-      user,
-    }
+    return {url: '/auth/profile'}
   }
 
   /**
@@ -179,12 +192,11 @@ export class AuthController {
    * @returns the hotel object whose password has now been changed.
    */
   @Post('hotelPasswordReset')
+  @Redirect()
   @UseGuards(JwtGuard)
   async changeHotelPassword(@Req() req:any, @Body() passwordInfo: PasswordResetDto) {
     const hotel = await this.authService.changeHotelPassword(req.user.id, passwordInfo)
-    return {
-      hotel,
-    }
+    return {url: '/auth/profile'}
   }
 }
 

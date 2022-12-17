@@ -1,33 +1,188 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>You are {{ hotel.hotel_name }}. You are logged in as a hotel.</p>
-    <h2>Your profile information</h2>
-    <form action="/auth/hotelUpdate", method="post">
-        <!--the names of input fields in this form should match the names in the HotelUpdateDto -->
-        <label for="full_name">hotel name:</label>
-        <input type="text" name="hotel_name" id="hotel_name" value="{{ hotel.hotel_name }}"><br>
-        <label for="user_name">username:</label>
-        <input type="text" name="user_name" id="user_name" value="{{ hotel.user_name }}"><br>
-        <label for="email">email:</label>
-        <input type="text" name="email" id="email" value="{{ hotel.email }}">
-        <input type="submit" value="change profile">
-    </form>
-    <hr>
-    <h2>Reset your password?</h2>
-    <form action="/auth/hotelPasswordReset", method="post">
-    <!-- the names of in this form should match the names in the PasswordResetDto -->
-        <input type="password" name="old_password" id="old_password" placeholder="your old password"><br>
-        <input type="text" name="new_password" id="new_password" placeholder="your new password">
-        <input type="submit" value="change password">
-    </form>
-    <hr>
-    <a href="">delete your account</a>
-</body>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link href='../font-awesome/css/fontawesome.css' rel='stylesheet' />
+    <link href='../font-awesome/css/all.css' rel='stylesheet' />
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+    <link
+      href='https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Rubik:wght@300;400;500;600;700;900&display=swap'
+      rel='stylesheet'
+    />
+    <link rel='stylesheet' href='/auth/style.css' />
+    <script defer type='module' src='/auth/script/appEdit.js'></script>
+    <title>Maderia</title>
+  </head>
+  <body>
+    <div class='grid grid-user-profile'>
+      <header class='header-profile col-1'>
+        <nav class='nav-profile'>
+          <ul class='nav-profile-links'>
+            <li><a class='nav-profile-link' href='#'>Home</a></li>
+            <li><a class='nav-profile-link btn btn-less-user' href='#'><span
+                  class='package'
+                >Packages</span></a></li>
+            <li><a class='nav-profile-link' href='#'><i
+                  class='fa-light fa-bell side-bar-icon'
+                ></i></a></li>
+            <a class='nav-profile-link profile-image'>
+              <img
+                class='nav-profile-img'
+                src='../img/customer-1.jpg'
+                alt='user-photo'
+                srcset=''
+              />
+              <span class='username'>{{hotel.hotel_name}}</span>
+            </a>
+          </ul>
+        </nav>
+      </header>
+      <div class='side-bar col-2'>
+        <a href='#' class='side-bar-logo'>maderia.com</a>
+        <ul class='side-bar_links'>
+          <li>
+            User Profile
+          </li>
+          <li class='side-bar__item item-active'>
+            <a class='side-bar_link' href='#'>
+              <i class='fa-light fa-user-tie side-bar-icon'></i><span>User info</span>
+            </a>
+          </li>
+          <li class='side-bar__item'>
+            <a class='side-bar_link' href='#'><i
+                class='fa-light fa-heart side-bar-icon'
+              ></i><span>Favorites</span>
+            </a>
+          </li>
+          <li class='side-bar__item'>
+            <a class='side-bar_link' href='#'><i
+                class='fa-light fa-star side-bar-icon'
+              ></i><span>Watchlist</span>
+            </a>
+          </li>
+          <li class='side-bar__item'>
+            <a class='side-bar_link' href='#'>
+              <i class='fa-light fa-gear side-bar-icon'></i><span
+              >Settings</span>
+            </a>
+          </li>
+          <li class='side-bar__item'>
+            <a class='side-bar_link' href='#'><i
+                class='fa-light fa-bell side-bar-icon'
+              ></i><span>Notification</span>
+            </a>
+          </li>
+          <li class='side-bar__item'><a
+              class='side-bar_link'
+              href='/auth/signout'
+            ><i
+                class='fa-light fa-arrow-up-left-from-circle side-bar-icon'
+              ></i>Logout</a></li>
+        </ul>
+      </div>
+      <main class='main-area col-3'>
+        <section class='edit-profile'>
+          <div class='edit-profile-box'>
+            <a class='edit-profile-image-link'>
+              <img
+                class='edit-profile-img'
+                src='../img/customer-1.jpg'
+                alt='user-photo'
+                srcset=''
+              />
+            </a>
+            <span class='username profile-username'>{{hotel.hotel_name}}</span>
+          </div>
+          <form action='/auth/hotelUpdate' method='post' class='profile-form'>
+
+            <label for='full-name' class='form-label form-user-label'>Full name</label>
+            <input
+              class='form-input form-input--user-name'
+              id='full-name'
+              name='hotel_name'
+              value='{{hotel.hotel_name}}'
+              required
+              type='text'
+            />
+            <p class='form-Validation form-Validation-name'>&nbsp;</p>
+
+            <label
+              for='user-name'
+              class='form-label form-user-label'
+            >Username</label>
+            <input
+              class='form-input form-input--user-name'
+              id='user-name'
+              name='user_name'
+              value='{{hotel.user_name}}'
+              required
+              type='text'
+            />
+            <p class='form-Validation form-Validation-name'>&nbsp;</p>
+
+            <label for='email' class='form-label'>Email</label>
+            <input
+              class='form-input form-input--email'
+              id='email'
+              name='email'
+              type='email'
+              value='{{hotel.email}}'
+              required
+            />
+            <p class='form-Validation form-Validation-email'>&nbsp;</p>
+
+            <a href='#' class='btn btn-link password-form-link'>
+              Change password
+            </a>
+            <div class='u-centering'>
+              <button class='btn btn-blue btn-save-changes-profile'>Save changes</button>
+            </div>
+          </form>
+
+          <form
+            action='/auth/hotelPasswordReset'
+            method='post'
+            class='password-form hidden'
+          >
+            <label for='password-current' class='form-label'>Current password</label>
+            <input
+              class='form-input form-input--password--current'
+              id='password'
+              name='old_password'
+              type='password'
+              required
+            />
+            <p
+              class='form-Validation form-Validation-password-current'
+            >&nbsp;</p>
+
+            <label for='password-new' class='form-label'>New password</label>
+            <input
+              class='form-input form-input--password--new'
+              id='password-new'
+              name='new_password'
+              type='password'
+              required
+            />
+            <p class='form-Validation form-Validation-password-new'>&nbsp;</p>
+
+            <a href='#' class='btn btn-link profile-form-link'>
+              Back to profile
+            </a>
+            <div class='u-centering'>
+              <button type='submit' class='btn btn-blue'>Save changes</button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+    <div class='popup'>
+      <p class='popup-text'>Your changes are saved.</p>
+      <i class='fa-light fa-circle-xmark popup-close'></i>
+    </div>
+
+    <div class='overlay'></div>
+  </body>
 </html>

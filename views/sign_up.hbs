@@ -1,28 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h2>register as a user</h2>
-    <form action="/auth/usersignup" method="post">
-    <input type="text" name="full_name" id="full_name" placeholder="your full name">
-    <input type="text" name="user_name" id="user_name" placeholder="create a user name">
-    <input type="text" name="email" id="email" placeholder="your email">
-    <input type="password" name="password" id="password", placeholder="your password">
-    <input type="submit" value="submit">
-    </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../font-awesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="../font-awesome/css/all.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Rubik:wght@300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script defer type="module" src="script/appRegister.js"></script>
+    <title>Maderia</title>
+  </head>
+  <body>
+    <header class="header-r">
+      <div class="container">
+        <nav class="nav">
+          <a href="#" class="nav__logo">maderia.com</a>
+          <div class="nav-links">
+            <a class="nav-link" href="#">
+              <i class="fa-light fa-globe nav-icon"></i> English</a
+            >
+            <a class="nav-link btn btn-less" href="#"> Packages</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section class="section-registration">
+        <h1 class="heading-secondary">Create account</h1>
+        <div class="toggle-box">
+          <span class="toggle-box-in">
+            <button class="toggle toggle--user toggle--active">As a user</button
+            ><button class="toggle toggle--hotel">As a hotel</button>
+          </span>
+        </div>
+        <form action="/auth/userSignUp" method="post" class="form">
+          <label for="full-name" class="form-label form-user-label"
+            >Full name</label
+          >
+          <input
+            class="form-input form-input--user-name"
+            id="full-name"
+            name="full_name"
+            required
+            type="text"
+          />
+          <p class="form-Validation form-Validation-name">&nbsp;</p>
+          <label for="user-name" class="form-label form-user-label"
+            >Username</label
+          >
+          <input
+            class="form-input"
+            id="user-name"
+            name="user_name"
+            required
+            type="text"
+          />
+          <p class="form-Validation form-Validation-name">&nbsp;</p>
+          <label for="email" class="form-label">Email</label>
+          <input
+            class="form-input form-input--email"
+            id="email"
+            name="email"
+            type="email"
+            required
+          />
+          <p class="form-Validation form-Validation-email">&nbsp;</p>
+          <label for="password" class="form-label">Password</label>
+          <input
+            class="form-input form-input--password"
+            id="password"
+            name="password"
+            type="password"
+            minlength="8"
+            required
+          />
+          <p class="form-Validation form-Validation-password">&nbsp;</p>
+          <input type="submit" class="btn btn-blue btn-register" value="register">
+        </form>
+      </section>
+    </main>
 
-    <h2>register as a hotel</h2>
-    <form action="/auth/hotelsignup" method="post">
-    <input type="text" name="hotel_name" id="hotel_name" placeholder="The name of your hotel">
-    <input type="text" name="user_name" id="user_name" placeholder="create a user name">
-    <input type="text" name="email" id="email" placeholder="your email">
-    <input type="password" name="password" id="password", placeholder="your password">
-    <input type="submit" value="submit">
-    </form>
-</body>
+    <div class="popup">
+      <p class="popup-text">Your are sucessfully register.</p>
+      <p class="popup-text">Sign in now</p>
+      <a class="btn btn-blue" href="./login.html"> Sign in</a>
+      <i class="fa-light fa-circle-xmark popup-close"></i>
+    </div>
+
+    <div class="overlay"></div>
+  </body>
 </html>

@@ -170,6 +170,27 @@ export class AuthController {
   }
 
   /**
+   * This simple controller accepts Get requests for the profile pages, checks if it's a user or a hotel
+   * requesting the profile page and responds by rendering different templates based on the client type.
+   * @param req the freamwork passes the request object
+   * @param res the freamwork passes the response object
+   * @returns returning res.render() signals hadlebars to render a template and pass arguments to it.
+   */
+  @Get('profile')
+  @UseGuards(JwtGuard)
+  profile(@Req() req:any, @Res() res: Response) {
+    const client = req.user
+    // this is how we know if the client is a user or a hotel. we check for the 'full_name' field.
+    if(client.full_name) {
+      // this return signals hadlebars (the template engine) to render the specified template.
+      return res.render('user_profile', {'user': client})
+    } else {
+      // here again, we're rendering a template.
+      return res.render('hotel_profile', {'hotel': client})
+    }
+  }
+
+  /**
    * This controller handles password reset for users.
    * @param req the request object will be passed to the controller method (by the freamwork)
    * @param passwordInfo this instanceo of PasswordResetDto contains the old password (for verification purposes)

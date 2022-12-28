@@ -109,6 +109,8 @@ export class AuthService {
           user_name: dto.user_name,
           password_hash: hash.trim(),
           email: dto.email,
+          latitude: dto.latitude,
+          longitude: dto.longitude,
         },
       });
       // we sign and return a token upon successful sign-up

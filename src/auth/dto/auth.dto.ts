@@ -97,6 +97,12 @@ export class HotelUpdateDto {
   @IsNotEmpty()
   @IsString()
   email: string;
+  @IsLatitude()
+  @IsNotEmpty()
+  latitude: string;
+  @IsLongitude()
+  @IsNotEmpty()
+  longitude: string;
 };
 
 /**

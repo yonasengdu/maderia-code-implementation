@@ -255,6 +255,8 @@ export class AuthService {
         hotel_name: newHotelInfo.hotel_name,
         user_name: newHotelInfo.user_name,
         email: newHotelInfo.email,
+        latitude: newHotelInfo.latitude,
+        longitude: newHotelInfo.longitude,
       },
     });
     // we should remove the password hash before returning the updated user

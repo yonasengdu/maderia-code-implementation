@@ -2,9 +2,11 @@ import { Body, Controller, Get, Render, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../auth/jwt.guard';
 import { Request } from 'express';
 import { user } from '@prisma/client';
+import { ClientService } from './client.service';
 
 @Controller('client')
 export class ClientController {
+  constructor(private clientService: ClientService) {}
 
   // AuthGuard is a pre-made guard. we tell what type of guard we want by passing 'jwt'
   @UseGuards(JwtGuard)
@@ -25,6 +27,16 @@ export class ClientController {
         name: client.hotel_name,
         client_type: 'hotel'
       }
+    }
+  }
+
+  @Get('nearbyData')
+  async nearbyData(@Body() body) {
+    // get the nearby hotels from the database
+    // we assume the front end code injects the location data in the body of the request
+    let nearbyHotels = await this.clientService.nearbyHotels(body.location, 10)
+    return {
+      nearbyHotels,
     }
   }
 }

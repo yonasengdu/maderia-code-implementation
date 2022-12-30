@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsEmail, IsLatitude, IsLongitude, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class AuthDto{
   @IsEmail()
@@ -47,6 +47,12 @@ export class HotelSignupDto {
   @IsNotEmpty()
   @IsString()
   password: string;
+  @IsLatitude()
+  @IsNotEmpty()
+  latitude: string;
+  @IsLongitude()
+  @IsNotEmpty()
+  longitude: string;
 }
 
 export class UserSignInDto {
@@ -91,6 +97,12 @@ export class HotelUpdateDto {
   @IsNotEmpty()
   @IsString()
   email: string;
+  @IsLatitude()
+  @IsNotEmpty()
+  latitude: string;
+  @IsLongitude()
+  @IsNotEmpty()
+  longitude: string;
 };
 
 /**

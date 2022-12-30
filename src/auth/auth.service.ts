@@ -109,6 +109,8 @@ export class AuthService {
           user_name: dto.user_name,
           password_hash: hash.trim(),
           email: dto.email,
+          latitude: dto.latitude,
+          longitude: dto.longitude,
         },
       });
       // we sign and return a token upon successful sign-up
@@ -253,6 +255,8 @@ export class AuthService {
         hotel_name: newHotelInfo.hotel_name,
         user_name: newHotelInfo.user_name,
         email: newHotelInfo.email,
+        latitude: newHotelInfo.latitude,
+        longitude: newHotelInfo.longitude,
       },
     });
     // we should remove the password hash before returning the updated user

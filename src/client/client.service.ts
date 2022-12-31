@@ -32,8 +32,10 @@ export class ClientService {
       );
       return distanceA - distanceB;
     }
-    // let's sort the hotels with out comparator function
+    // let's sort the hotels with our comparator function
     let nearby = allHotels.sort(compareHotels);
+    // let's strip the password hashes off the hotel objects
+    nearby.forEach((value)=> {delete value.password_hash})
     // return the top n
     return nearby.slice(0, n);
   }

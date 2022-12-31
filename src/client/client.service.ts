@@ -7,7 +7,7 @@ export class ClientService {
   constructor(private prisma: PrismaService) {}
 
   /**
-   * This service method get's location of a user and returns a list of the top n closest 
+   * This service method get's location of a user and returns a list of the top n closest
    * hotels to that location
    * @param location the location of the user (in latutude and longitude)
    * @param n n is the number of hotels we want to fetch (e.g. top 10 or top 15)

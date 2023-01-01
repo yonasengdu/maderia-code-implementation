@@ -4,20 +4,23 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="font-awesome/css/fontawesome.css" rel="stylesheet" />
-    <link href="font-awesome/css/all.css" rel="stylesheet" />
+    <link href="../font-awesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="../font-awesome/css/all.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Rubik:wght@300;400;500;600;700;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
-    <script defer type="module" src="./script/app.js"></script>
+    <link rel="stylesheet" href="/client/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="/client/css/style.css" />
+    <script defer src="/client/leaflet/leaflet.js"></script>
+    <script defer src="/client/script/nearby.js"></script>
+
     <title>Maderia</title>
   </head>
   <body>
-    <header class="header">
+    <header class="header-sign-in">
       <div class="container">
         <nav class="nav">
           <a href="#" class="nav__logo">maderia.com</a>
@@ -25,24 +28,21 @@
             <a class="nav-link" href="#">
               <i class="fa-light fa-globe nav-icon"></i> English</a
             >
-             <a class='nav-link btn btn-less' href='/client/nearbyHotels'>Get
-              nearBy Hotels</a>
-            <a class="nav-link btn btn-main" href="/auth/signup">
-              Register</a
-            >
-            <a class="nav-link btn btn-main" href="/auth/signin">
-              Sign in</a
-            >
+            <a class="nav-link btn btn-less" href="#"> Packages</a>
           </div>
         </nav>
-
-        <div class="hero__text">
-          <h1 class="heading-primary">Find your next stay</h1>
-          <p class="hero__text-p">
-            search low price on hotels, homes and much more...
-          </p>
-        </div>
       </div>
     </header>
+    <main>
+      <section class="section-nearHotels">
+        <div class="hmap grid grid-2-col-sm-lg hidden">
+          <div class="hmap-Col hmap-list">
+            <button class="btn btn-blue hmap-location">Your Location</button>
+            <ul class="hmap-list__ul"></ul>
+          </div>
+          <div id="map" class="hmap-Col hmap-area"></div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>

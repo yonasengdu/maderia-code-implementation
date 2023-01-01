@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Render, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../auth/jwt.guard';
 import { Request } from 'express';
 import { user } from '@prisma/client';
@@ -36,7 +36,7 @@ export class ClientController {
     return {}
   }
 
-  @Get('nearbyData')
+  @Post('nearbyData')
   async nearbyData(@Body() body) {
     // get the nearby hotels from the database
     // we assume the front end code injects the location data in the body of the request

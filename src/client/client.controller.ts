@@ -30,6 +30,12 @@ export class ClientController {
     }
   }
 
+  @Get('nearbyHotels')
+  @Render('nearby_hotels')
+  nearbyHotels(){
+    return {}
+  }
+
   @Get('nearbyData')
   async nearbyData(@Body() body) {
     // get the nearby hotels from the database

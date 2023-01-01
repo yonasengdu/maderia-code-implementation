@@ -25,6 +25,8 @@ model hotel {
   user_name String @unique
   email String  @unique
   password_hash String
+  latitude String
+  longitude String
   @@map("Hotels")
 }
 

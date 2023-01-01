@@ -16,6 +16,7 @@ import { JwtGuard } from './jwt.guard';
  * The controller class for the Auth module. This class handles endpoints related
  * to authentication logic: the user-sign-up, hotel-sign-up
  */
+
 @Controller('auth')
 export class AuthController {
   /**
@@ -31,7 +32,10 @@ export class AuthController {
    * Currently, all this controller does is call the userSignUp service, passing the dto.
    * @param dto Instance of the UserAuthDto class is passed to this method after the
    * post data gets validated.
+   * @returns It returns the URL to which the current page should be redirected to, /client/index.
+   * 
    */
+  
   @Post('userSignup')
   @Redirect()
   async userSignup(@Body() dto: UserSignupDto, @Res({ passthrough: true }) res: Response) {
@@ -50,8 +54,20 @@ export class AuthController {
    * validation of the dto fails.
    * Currently, all this controller does is call the hotelSignUp service, passing the dto.
    * @param dto Instance of the UserAuthDto class is passed to this method after the post
+   * @returns It returns the URL to which the current page should be redirected to, /client/index.
+   * 
    * data gets validated.
+   * Hotel sign up route expects HotelsignupDTO, it expects valid hotel_name,user_name,email,password  in a body of the request.
+ *  If  email or password is alreaddy taken the server responds an error message: 'credential has been taken'.
+ * @example {
+    "hotel_name":"samplehotel",
+    "user_name":"samplehotelusername",
+    "email":"samplehotel@gmail.com",
+    "password":"samplehotelpassword"
+
+}
    */
+
   @Post('hotelSignup')
   @Redirect()
   async hotelSignup(@Body() dto: HotelSignupDto, @Res({ passthrough: true}) res: Response) {
@@ -62,7 +78,21 @@ export class AuthController {
     // if sign-up is successful, we redirect to the index page.
     return {url: '/client/index'}
   }
+/**
+ * 
+ *  
+ * @param dto Hotel sign in  route expects HotelsigninDTO, it expects valid email and password  in a body of the request.
+ * @param res 
+ *@example {
+    "hotel_name":"samplehotel",
+    "user_name":"samplehotelusername",
+    "email":"samplehotel@gmail.com",
+    "password":"samplehotelpassword"
 
+}
+ * @returns  It returns the URL to which the current page should be redirected to, /client/index.
+If wrong email or password is provided the server responds with 403(forbidden) and error message: 'the email is not registered'.
+ */
 
   @Post('hotelSignIn')
   @Redirect()
@@ -75,6 +105,16 @@ export class AuthController {
     return {url: '/client/index'}
   }
 
+  /**
+   * 
+   * @param dto the user must provide email and password.
+   * 
+   * @returns It returns the URL to which the current page should be redirected to, /client/index.
+   * If wrong email or password is provided the server responds with 403(forbidden) and error message: 'the email is not registered'.
+   * if the password is not correct the server responds with 403(forbidden)status code and error message:'the email is not registered'.
+ *
+   */
+
   @Post('userSignIn')
   @Redirect()
   async userSignIn(@Body() dto: UserSignInDto, @Res({ passthrough: true }) res: Response) {
@@ -85,6 +125,12 @@ export class AuthController {
     // if sign-in is successful, we redirect to the index page.
     return {url: '/client/index'}
   }
+  /**
+   * 
+   * This route is used to sign out a user. 
+   * The request expects no body and calling the end point will logout currently logged in user. The server will also expire token inside cookie in the browser side.
+   * @returns the server redirects the current page to the front page.
+   */
 
   @Get('signout')
   @Redirect()
@@ -106,6 +152,14 @@ export class AuthController {
     return {}
   }
 
+  /**
+   * this route is used to delet the current user.
+   * @param req server expects authorization header with bearer token.
+   * 
+   * @returns It returns the URL to which the current page should be redirected to(the front page),'/'.
+   * 
+   */
+
 
   @Delete('deleteUser')
   @Redirect()
@@ -117,6 +171,14 @@ export class AuthController {
     // then redirect to the front page
     return {url: '/'}
   }
+  
+  /**
+   * this route is used to delete the current user.
+   * @param req server expects authorization header with bearer token.
+   * 
+   * @returns It returns the URL to which the current page should be redirected to(the front page),'/'.
+   * 
+   */
 
   @Delete('deleteHotel')
   @UseGuards(JwtGuard)
@@ -128,9 +190,16 @@ export class AuthController {
   /**
    * This controller handles updating of profile information for users.
    * @param req the request objext will be passed to the controller method (by the freamwork)
+   * the server expects 
    * @param newUserInfo this instance of UserUpdateDto will contain the new user_name, email, and full_name of the user
    * that should go in place of (replace) the old ones.
-   * @returns returns the newly updated user object.
+   * @returns It returns the URL to which the current page should be redirected to, '/auth/profile'
+   * @example{
+    "full_name":"samplename",
+    "user_name":"sampleusernam",
+    "email":"sampleuser@gmail.com",
+    "password":"testpassword"
+}
    */
   @Post('userUpdate')
   @Redirect()
@@ -139,6 +208,21 @@ export class AuthController {
     const updatedUser = await this.authService.updateUser(req.user.id, newUserInfo)
     return {url: '/auth/profile'}
   }
+
+  /**
+   * This controller handles updating of profile information for user(hotel).
+   * @param req the request objext will be passed to the controller method (by the freamwork)
+   * the server expects 
+   * @param newUserInfo this instance of UserUpdateDto will contain the new hotel_name, email, and full_name of the user
+   * that should go in place of (replace) the old ones.
+   * @returns It returns the URL to which the current page should be redirected to, '/auth/profile'
+   * @example{
+    "hotel_name":"samplename",
+    "user_name":"sampleusernam",
+    "email":"sampleuser@gmail.com",
+   }
+   
+   */
 
   @Post('hotelUpdate')
   @Redirect()
@@ -174,7 +258,12 @@ export class AuthController {
    * @param req the request object will be passed to the controller method (by the freamwork)
    * @param passwordInfo this instanceo of PasswordResetDto contains the old password (for verification purposes)
    * and the new password that should replace the old one.
-   * @returns the user object whose password has now been changed.
+   * @returns returning res.render() signals hadlebars to render a template and pass arguments to it.
+   * @example 
+   * {
+    "old_password":"password1 122",
+    "new_password":"123456"
+}
    */
   @Post('userPasswordReset')
   @Redirect()
@@ -189,7 +278,12 @@ export class AuthController {
    * @param req the request object will be passed to the controller method (by the freamwork)
    * @param passwordInfo this instance of PasswordResetDto contains the old password (for verification purposes)
    * and the new password that should replace the old one.
-   * @returns the hotel object whose password has now been changed.
+   * @returns It returns the URL to which the current page should be redirected to, /auth/profile.
+   * @example 
+   * {
+    "old_password":"password1 122",
+    "new_password":"123456"
+}
    */
   @Post('hotelPasswordReset')
   @Redirect()

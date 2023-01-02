@@ -20,7 +20,8 @@ export class ClientController {
     if (client.full_name) {
       return {
         name: client.full_name,
-        client_type: 'user'
+        client_type: 'user',
+        user: true,
       }
     } else {
       return {

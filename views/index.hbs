@@ -21,12 +21,11 @@
         <nav class='nav'>
           <a href='#' class='nav__logo'>maderia.com</a>
           <div class='nav-links'>
-            <a class='nav-link' href='#'>
-              <i class='fa-light fa-globe nav-icon'></i>
-              English</a>
-            <a class='nav-link btn btn-less' href='/client/nearbyHotels'>Get
-              nearBy Hotels</a>
-            <a class='nav-link' href='#'> Hotels</a>
+            {{#if user}}
+              <a class='nav-link btn btn-less' href='/client/nearbyHotels'>
+                Nearby hotels</a>
+            {{/if}}
+
             <a
               class='nav-link btn btn-less logout'
               href='/auth/signout'

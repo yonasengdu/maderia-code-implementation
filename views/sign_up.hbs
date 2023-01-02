@@ -1,98 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="../font-awesome/css/fontawesome.css" rel="stylesheet" />
-    <link href="../font-awesome/css/all.css" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link href='../font-awesome/css/fontawesome.css' rel='stylesheet' />
+    <link href='../font-awesome/css/all.css' rel='stylesheet' />
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Rubik:wght@300;400;500;600;700;900&display=swap"
-      rel="stylesheet"
+      href='https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Rubik:wght@300;400;500;600;700;900&display=swap'
+      rel='stylesheet'
     />
-    <link rel="stylesheet" href="style.css" />
-    <script defer type="module" src="script/appRegister.js"></script>
+    <link rel='stylesheet' href='/auth/leaflet/leaflet.css' />
+    <link rel='stylesheet' href='style.css' />
+    <script defer src='/auth/leaflet/leaflet.js'></script>
+    <script defer type='module' src='script/appRegister.js'></script>
     <title>Maderia</title>
   </head>
   <body>
-    <header class="header-r">
-      <div class="container">
-        <nav class="nav">
-          <a href="#" class="nav__logo">maderia.com</a>
-          <div class="nav-links">
-            <a class="nav-link" href="#">
-              <i class="fa-light fa-globe nav-icon"></i> English</a
-            >
-            <a class="nav-link btn btn-less" href="#"> Packages</a>
+    <header class='header-r'>
+      <div class='container'>
+        <nav class='nav'>
+          <a href='#' class='nav__logo'>maderia.com</a>
+          <div class='nav-links'>
+            <a class='nav-link' href='#'>
+              <i class='fa-light fa-globe nav-icon'></i>
+              English</a>
+            <a class='nav-link btn btn-less' href='#'> Packages</a>
           </div>
         </nav>
       </div>
     </header>
     <main>
-      <section class="section-registration">
-        <h1 class="heading-secondary">Create account</h1>
-        <div class="toggle-box">
-          <span class="toggle-box-in">
-            <button class="toggle toggle--user toggle--active">As a user</button
-            ><button class="toggle toggle--hotel">As a hotel</button>
+      <section class='section-registration'>
+        <h1 class='heading-secondary'>Create account</h1>
+        <div class='toggle-box'>
+          <span class='toggle-box-in'>
+            <button class='toggle toggle--user toggle--active'>As a user</button><button
+              class='toggle toggle--hotel'
+            >As a hotel</button>
           </span>
         </div>
-        <form action="/auth/userSignUp" method="post" class="form">
-          <label for="full-name" class="form-label form-user-label"
-            >Full name</label
-          >
+        <form action='/auth/userSignUp' method='post' class='form'>
+        <div class="common">
+          <label for='full-name' class='form-label form-user-label'>Full name</label>
           <input
-            class="form-input form-input--user-name"
-            id="full-name"
-            name="full_name"
+            class='form-input form-input--user-name'
+            id='full-name'
+            name='full_name'
             required
-            type="text"
+            type='text'
           />
-          <p class="form-Validation form-Validation-name">&nbsp;</p>
-          <label for="user-name" class="form-label form-user-label"
-            >Username</label
-          >
+          <p class='form-Validation form-Validation-name'>&nbsp;</p>
+          <label
+            for='user-name'
+            class='form-label form-user-label'
+          >Username</label>
           <input
-            class="form-input"
-            id="user-name"
-            name="user_name"
+            class='form-input'
+            id='user-name'
+            name='user_name'
             required
-            type="text"
+            type='text'
           />
-          <p class="form-Validation form-Validation-name">&nbsp;</p>
-          <label for="email" class="form-label">Email</label>
+          <p class='form-Validation form-Validation-name'>&nbsp;</p>
+          <label for='email' class='form-label'>Email</label>
           <input
-            class="form-input form-input--email"
-            id="email"
-            name="email"
-            type="email"
-            required
-          />
-          <p class="form-Validation form-Validation-email">&nbsp;</p>
-          <label for="password" class="form-label">Password</label>
-          <input
-            class="form-input form-input--password"
-            id="password"
-            name="password"
-            type="password"
-            minlength="8"
+            class='form-input form-input--email'
+            id='email'
+            name='email'
+            type='email'
             required
           />
-          <p class="form-Validation form-Validation-password">&nbsp;</p>
-          <input type="submit" class="btn btn-blue btn-register" value="register">
+          <p class='form-Validation form-Validation-email'>&nbsp;</p>
+          <label for='password' class='form-label'>Password</label>
+          <input
+            class='form-input form-input--password'
+            id='password'
+            name='password'
+            type='password'
+            minlength='8'
+            required
+          />
+          <p class='form-Validation form-Validation-password'>&nbsp;</p>
+          <input
+            type='submit'
+            class='btn btn-blue btn-register'
+            value='register'
+          />
+          </div>
+          <div class='location hidden'>
+            <label class='form-label'> location</label>
+            <br />
+            <span class='btn-coord btn-coord-gps'>Get location from GPS</span>
+            <span class='btn-coord btn-coord-map'>Get location from map</span>
+            <p class='map-instruction hidden'>
+              Click on the hotel location on the map
+            </p>
+            <input
+              id='lat'
+              name='latitude'
+              class='location-input location-input-lat'
+              type='text'
+              value=''
+              required
+            />
+            <input
+              id='long'
+              name='longitude'
+              class='location-input location-input-long'
+              type='text'
+              value=''
+              required
+            />
+            <div id='map' class='map'></div>
+          </div>
         </form>
       </section>
     </main>
 
-    <div class="popup">
-      <p class="popup-text">Your are sucessfully register.</p>
-      <p class="popup-text">Sign in now</p>
-      <a class="btn btn-blue" href="./login.html"> Sign in</a>
-      <i class="fa-light fa-circle-xmark popup-close"></i>
+    <div class='popup'>
+      <p class='popup-text'>Your are sucessfully register.</p>
+      <p class='popup-text'>Sign in now</p>
+      <a class='btn btn-blue' href='./login.html'> Sign in</a>
+      <i class='fa-light fa-circle-xmark popup-close'></i>
     </div>
 
-    <div class="overlay"></div>
+    <div class='overlay'></div>
   </body>
 </html>

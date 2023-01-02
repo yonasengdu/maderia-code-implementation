@@ -13,15 +13,23 @@ const nameValidation = document.querySelector(".form-Validation-name");
 const emailValidation = document.querySelector(".form-Validation-email");
 const overlay = document.querySelector(".overlay");
 const popupClose = document.querySelector(".popup-close");
-const form = document.querySelector(".form")
+const form = document.querySelector(".form");
+const locationBox = document.querySelector(".location");
+const sectionRegistration = document.querySelector(".section-registration");
+const lat = document.querySelector(".location-input-lat");
+const long = document.querySelector(".location-input-long");
+const btnGps = document.querySelector(".btn-coord-gps");
+const btnMap = document.querySelector(".btn-coord-map");
+const mapinstruction = document.querySelector(".map-instruction");
 
 class AppRegister extends App {
   constructor() {
     super();
     toggleBox.addEventListener("click", this.toggleUser.bind(this));
-    btnRegister.addEventListener("click", this.createAccount.bind(this));
     overlay.addEventListener("click", this.removePopup);
     popupClose.addEventListener("click", this.removePopup);
+    btnGps.addEventListener("click", this.renderLocation.bind(this));
+    btnMap.addEventListener("click", this.renderMap.bind(this));
   }
   // createAccount(e) {
   //   // e.preventDefault();
@@ -114,12 +122,16 @@ class AppRegister extends App {
     );
     if (activeEl.classList.contains("toggle--user")) {
       fromUserLabel.textContent = "Full name";
+      locationBox.classList.add("hidden");
+      sectionRegistration.classList.remove("hotel");
       this.togglePoint = "user";
       form.setAttribute("action","/auth/userSignUp");
       inputName.setAttribute("name", "full_name");
     }
     if (activeEl.classList.contains("toggle--hotel")) {
       fromUserLabel.textContent = "Hotel name";
+      locationBox.classList.remove("hidden");
+      sectionRegistration.classList.add("hotel");
       this.togglePoint = "hotel";
       form.setAttribute("action","/auth/hotelSignUp");
       inputName.setAttribute("name", "hotel_name");
@@ -131,6 +143,90 @@ class AppRegister extends App {
   }
   removePopup() {
     document.body.classList.remove("showPopup");
+  }
+
+  Getlocation() {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition((location, err) => {
+        const { latitude: lat, longitude: lng } = location.coords;
+        console.log("a");
+        resolve([lat, lng]);
+        reject(err);
+      });
+    });
+  }
+
+  async renderLocation() {
+    try {
+      mapinstruction.classList.add("hidden");
+      if (this.map) {
+        this.map.remove();
+      }
+      const coords = await this.Getlocation();
+      lat.value = coords[0];
+      long.value = coords[1];
+      this.map = L.map("map").setView(coords, 13);
+      L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(this.map);
+
+      L.marker(coords)
+        .addTo(this.map)
+        .bindPopup(
+          L.popup({
+            autoClose: false,
+            // className: "mapPopupH",
+            closeOnClick: false,
+          })
+        )
+        .setPopupContent(
+          `<div><i class="fa-solid fa-location-dot"></i>
+        <p>Your location</p></div>`
+        )
+        .openPopup();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  async renderMap() {
+    try {
+      mapinstruction.classList.remove("hidden");
+      if (this.map) {
+        this.map.remove();
+      }
+      const coords = await this.Getlocation();
+      this.map = L.map("map").setView(coords, 13);
+      L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(this.map);
+    } catch (err) {
+      console.error(err);
+    }
+    this.map.on("click", this.pickCoordsOnmap.bind(this));
+  }
+  async pickCoordsOnmap(e) {
+    const coords = e.latlng;
+    lat.value = coords.lat;
+    long.value = coords.lng;
+    if (this.marker) {
+      this.map.removeLayer(this.marker);
+    }
+    this.marker = new L.marker([coords.lat, coords.lng])
+      .addTo(this.map)
+      .bindPopup(
+        L.popup({
+          autoClose: false,
+          className: "mapPopupH",
+          closeOnClick: false,
+        })
+      )
+      .setPopupContent(
+        `<div><i class="fa-solid fa-location-dot"></i>
+    <p>Hotel's Location</p></div>`
+      )
+      .openPopup();
   }
 }
 

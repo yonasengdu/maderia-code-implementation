@@ -10,6 +10,7 @@ import {
   HotelSignupDto,
   HotelUpdateDto,
   PasswordResetDto,
+  updateImageDto,
   UserSignInDto,
   UserSignupDto,
   UserUpdateDto,
@@ -313,4 +314,6 @@ export class AuthService {
     delete hotel.password_hash
     return hotel
   }
+
+  
 }

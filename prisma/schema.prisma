@@ -15,6 +15,7 @@ model user {
   user_name String @unique
   email String @unique
   password_hash String
+  image String  @default("default-b92a3903-16e4-49ce-be9d-53ff8c0fd24e.png")
   @@map("Users")
 
 }
@@ -27,6 +28,7 @@ model hotel {
   password_hash String
   latitude String
   longitude String
+  hotel_image String @default("hotel-694bfd2d-0672-4953-893e-a4ebd192ae53.png")
   @@map("Hotels")
 }
 

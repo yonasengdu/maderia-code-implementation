@@ -118,4 +118,8 @@ export class PasswordResetDto {
   @IsString()
   new_password: string;
 }
+export class updateImageDto{
+  @IsNotEmpty()
+  imgpath:String;
+}
 

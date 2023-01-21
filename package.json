@@ -38,7 +38,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typedoc": "^0.23.21"
+    "typedoc": "^0.23.21",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@dotenv/cli": "^2.2.2",

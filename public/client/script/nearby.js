@@ -1,8 +1,7 @@
-
-const hotelmap = document.querySelector(".hmap");
-const bntGetNearHotels = document.querySelector(".btn-getNear-hotels");
-const hotelListContainer = document.querySelector(".hmap-list__ul");
-const locationBtn = document.querySelector(".hmap-location");
+const hotelmap = document.querySelector('.hmap');
+const bntGetNearHotels = document.querySelector('.btn-getNear-hotels');
+const hotelListContainer = document.querySelector('.hmap-list__ul');
+const locationBtn = document.querySelector('.hmap-location');
 
 class NearHotel {
   map;
@@ -10,68 +9,66 @@ class NearHotel {
   constructor() {
     this.getData.bind(this)();
     hotelListContainer.addEventListener(
-      "click",
-      this.renderHotelOnmap.bind(this)
+      'click',
+      this.renderHotelOnmap.bind(this),
     );
-    locationBtn.addEventListener("click", this.renderLocation.bind(this));
+    locationBtn.addEventListener('click', this.renderLocation.bind(this));
   }
   Getlocation() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition((location, err) => {
         const { latitude: lat, longitude: lng } = location.coords;
-        resolve({lat:lat,long:lng});
+        resolve({ lat: lat, long: lng });
       });
     });
   }
 
-  async getData(){
-const coords = await this.Getlocation();
-console.log(coords);
-try{
-const response = await fetch('/client/nearbyData', {
-  method: 'POST', 
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({"location": coords}),
-})
-this.data = await response.json();
-this.renderMap.bind(this)();
-console.log(this.data)
-}catch(err){
-  console.error(err)
-}
+  async getData() {
+    const coords = await this.Getlocation();
+    try {
+      const response = await fetch('/client/nearbyData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ location: coords }),
+      });
+      this.data = await response.json();
+      this.renderMap.bind(this)();
+      console.log(this.data);
+    } catch (err) {
+      console.error(err);
+    }
   }
-
 
   async renderMap() {
     try {
-      hotelmap.classList.remove("hidden");
+      hotelmap.classList.remove('hidden');
       const coords = await this.Getlocation();
-      console.log(coords)
-      this.map = L.map("map").setView([coords.lat,coords.long], 18);
       console.log(coords);
-      L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+      this.map = L.map('map').setView([coords.lat, coords.long], 18);
+      console.log(coords);
+      L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(this.map);
       this.renderHotelList();
       this.renderHotelsOnMap.bind(this)();
-      const locationMarker = L.marker([coords.lat,coords.long])
+      const locationMarker = L.marker([coords.lat, coords.long])
         .addTo(this.map)
         .bindPopup(
           L.popup({
             autoClose: false,
-            className: "mapPopupL",
+            className: 'mapPopupL',
             closeOnClick: false,
-          })
+          }),
         )
         .setPopupContent(
           `<div><i class="location fa-solid fa-location-dot"></i>
-        <p>Your Location</p></div>`
+        <p>Your Location</p></div>`,
         )
         .openPopup();
-      locationMarker._icon.classList.add("map-icon-color");
+      locationMarker._icon.classList.add('map-icon-color');
     } catch (err) {
       console.error(err);
     }
@@ -80,18 +77,18 @@ console.log(this.data)
   renderHotelsOnMap() {
     const currentObject = this;
     this.data.nearbyHotels.forEach(function (data) {
-      L.marker([data.latitude,data.longitude])
+      L.marker([data.latitude, data.longitude])
         .addTo(currentObject.map)
         .bindPopup(
           L.popup({
             autoClose: false,
-            className: "mapPopupH",
+            className: 'mapPopupH',
             closeOnClick: false,
-          })
+          }),
         )
         .setPopupContent(
           `<div><i class="fa-solid fa-hotel"></i>
-        <p>${data.hotel_name}</p></div>`
+        <p>${data.hotel_name}</p></div>`,
         )
         .openPopup();
     });
@@ -116,22 +113,28 @@ console.log(this.data)
     <a class="hmap-item__reserve btn btn-blue" href="#">Reserve</a>
   </li>
     `;
-      hotelListContainer.insertAdjacentHTML("beforeend", html);
+      hotelListContainer.insertAdjacentHTML('beforeend', html);
     });
   }
 
   renderHotelOnmap(e) {
-    const clicked = e.target.closest(".hmap-item");
+    const clicked = e.target.closest('.hmap-item');
     if (clicked) {
-      console.log("ok");
+      console.log('ok');
       const id = +clicked.dataset.id;
       const hotel = this.data.nearbyHotels.find((data) => data.id === id);
-      this.map.setView([hotel.latitude,hotel.longitude], 24, { animate: true, duration: 1 });
+      this.map.setView([hotel.latitude, hotel.longitude], 24, {
+        animate: true,
+        duration: 1,
+      });
     }
   }
   async renderLocation() {
     const coords = await this.Getlocation();
-    this.map.setView([coords.lat,coords.long], 24, { animate: true, duration: 1 });
+    this.map.setView([coords.lat, coords.long], 24, {
+      animate: true,
+      duration: 1,
+    });
   }
 }
 

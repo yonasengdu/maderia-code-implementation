@@ -34,3 +34,18 @@ model hotel {
 
 
 
+model Review{
+  id Int @id @default(autoincrement())
+  rating Int
+  text String
+  userId Int 
+  user   user   @relation(fields: [userId], references: [id])
+  hotelId Int
+  hotel hotel @relation(fields:[hotelId],references :[id])
+  
+  upvotes Int @default(0)
+  downvotes Int @default(0)
+  createdDate DateTime @default(now())
+  modifieddate DateTime @updatedAt
+  
+}

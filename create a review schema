@@ -1,0 +1,65 @@
+Merge branch 'master' of https://github.com/Maderia-SEP/code-implementation into Image-upload
+
+create  a review schema
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Fri Jan 27 15:34:32 2023 +0300
+#
+# On branch Image-upload
+# Changes to be committed:
+#	modified:   public/client/script/nearby.js
+#	deleted:    src/client/css/style.css
+#	deleted:    src/client/script/app.js
+#	deleted:    src/client/script/appEdit.js
+#	deleted:    src/client/script/appMain.js
+#	deleted:    src/client/script/appRegister.js
+#	deleted:    src/client/script/appSignIn.js
+#	deleted:    src/client/script/nearby.js
+#	deleted:    src/docs/.nojekyll
+#	deleted:    src/docs/assets/highlight.css
+#	deleted:    src/docs/assets/main.js
+#	deleted:    src/docs/assets/search.js
+#	deleted:    src/docs/assets/style.css
+#	deleted:    src/docs/classes/app_module.AppModule.html
+#	deleted:    src/docs/classes/auth_auth_controller.AuthController.html
+#	deleted:    src/docs/classes/auth_auth_module.AuthModule.html
+#	deleted:    src/docs/classes/auth_auth_service.AuthService.html
+#	deleted:    src/docs/classes/auth_dto_auth_dto.AuthDto.html
+#	deleted:    src/docs/classes/auth_dto_auth_dto.HotelSignInDto.html
+#	deleted:    src/docs/classes/auth_dto_auth_dto.HotelSignupDto.html
+#	deleted:    src/docs/classes/auth_dto_auth_dto.HotelUpdateDto.html
+#	deleted:    src/docs/classes/auth_dto_auth_dto.PasswordResetDto.html
+#	deleted:    src/docs/classes/auth_dto_auth_dto.UserSignInDto.html
+#	deleted:    src/docs/classes/auth_dto_auth_dto.UserSignupDto.html
+#	deleted:    src/docs/classes/auth_dto_auth_dto.UserUpdateDto.html
+#	deleted:    src/docs/classes/auth_jwt_guard.JwtGuard.html
+#	deleted:    src/docs/classes/auth_jwt_strategy.JwtStrategy.html
+#	deleted:    src/docs/classes/client_client_controller.ClientController.html
+#	deleted:    src/docs/classes/client_client_module.ClientModule.html
+#	deleted:    src/docs/classes/prisma_prisma_module.PrismaModule.html
+#	deleted:    src/docs/classes/prisma_prisma_service.PrismaService.html
+#	deleted:    src/docs/classes/surface_surface_controller.SurfaceController.html
+#	deleted:    src/docs/classes/surface_surface_module.SurfaceModule.html
+#	deleted:    src/docs/enums/auth_auth_service.ClientType.html
+#	deleted:    src/docs/index.html
+#	deleted:    src/docs/modules.html
+#	deleted:    src/docs/modules/app_module.html
+#	deleted:    src/docs/modules/auth_auth_controller.html
+#	deleted:    src/docs/modules/auth_auth_module.html
+#	deleted:    src/docs/modules/auth_auth_service.html
+#	deleted:    src/docs/modules/auth_dto.html
+#	deleted:    src/docs/modules/auth_dto_auth_dto.html
+#	deleted:    src/docs/modules/auth_jwt_guard.html
+#	deleted:    src/docs/modules/auth_jwt_strategy.html
+#	deleted:    src/docs/modules/client_client_controller.html
+#	deleted:    src/docs/modules/client_client_module.html
+#	deleted:    src/docs/modules/main.html
+#	deleted:    src/docs/modules/prisma_prisma_module.html
+#	deleted:    src/docs/modules/prisma_prisma_service.html
+#	deleted:    src/docs/modules/surface_surface_controller.html
+#	deleted:    src/docs/modules/surface_surface_module.html
+#	modified:   src/prisma/prisma.service.ts
+#	modified:   views/index.hbs
+#

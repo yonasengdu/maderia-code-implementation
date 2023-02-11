@@ -19,6 +19,7 @@ model user {
   image         String @default("default-b92a3903-16e4-49ce-be9d-53ff8c0fd24e.png")
 
   Review Review[]
+  reservations  Reservation[]
 
   @@map("Users")
 }
@@ -33,6 +34,7 @@ model hotel {
   longitude     String
   hotel_image   String   @default("hotel-694bfd2d-0672-4953-893e-a4ebd192ae53.png")
   Review        Review[]
+  roomTypes     RoomType[]
 
   @@map("Hotels")
 }
@@ -50,4 +52,30 @@ model Review {
   downvotes    Int      @default(0)
   createdDate  DateTime @default(now())
   modifieddate DateTime @updatedAt
+}
+
+model RoomType {
+  id      Int   @id @default(autoincrement())
+  name    String  @unique
+  description   String
+  price   Float
+  expiryInterval  Int // this is number of minutes
+  totalNumber   Int // this is the number of rooms under this room type
+  hotelId       Int
+  hotel     hotel   @relation(fields: [hotelId], references: [id])
+  reservations  Reservation[]
+}
+
+model Reservation {
+  id  Int @id @default(autoincrement())
+  startTime DateTime
+  lifetime  Int   // this is the number of minutes a reservation lasts for
+  occupancy Boolean
+  occupancyLifetime Int // this is the number of minutes an occupancy lasts for
+
+  roomTypeId  Int
+  roomType  RoomType  @relation(fields: [roomTypeId], references: [id])
+
+  userId  Int
+  user  user  @relation(fields: [userId], references: [id])
 }

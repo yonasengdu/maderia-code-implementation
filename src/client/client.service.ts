@@ -1,9 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, PrismaClient, hotel } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RoomTypeDto } from './dto.client';
 
 @Injectable()
 export class ClientService {
+  async createHotelRoomType(dto: RoomTypeDto, hotel: Express.User) {
+    console.log(hotel)
+    return await this.prisma.roomType.create({
+      data: {
+        name: dto.name,
+        description: dto.description,
+        price: dto.price,
+        reservationLifetime: dto.reservationLifetime,
+        totalNumber: dto.totalNumber,
+        hotelId: hotel['id']
+      }
+    })
+  }
   constructor(private prisma: PrismaService) {}
 
   /**

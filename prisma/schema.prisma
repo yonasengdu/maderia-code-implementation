@@ -18,21 +18,21 @@ model user {
   password_hash String
   image         String @default("default-b92a3903-16e4-49ce-be9d-53ff8c0fd24e.png")
 
-  Review Review[]
-  reservations  Reservation[]
+  Review       Review[]
+  reservations Reservation[]
 
   @@map("Users")
 }
 
 model hotel {
-  id            Int      @id @default(autoincrement())
-  hotel_name    String   @unique
-  user_name     String   @unique
-  email         String   @unique
+  id            Int        @id @default(autoincrement())
+  hotel_name    String     @unique
+  user_name     String     @unique
+  email         String     @unique
   password_hash String
   latitude      String
   longitude     String
-  hotel_image   String   @default("hotel-694bfd2d-0672-4953-893e-a4ebd192ae53.png")
+  hotel_image   String     @default("hotel-694bfd2d-0672-4953-893e-a4ebd192ae53.png")
   Review        Review[]
   roomTypes     RoomType[]
 
@@ -55,27 +55,27 @@ model Review {
 }
 
 model RoomType {
-  id      Int   @id @default(autoincrement())
-  name    String  @unique
-  description   String
-  price   Float
-  expiryInterval  Int // this is number of minutes
-  totalNumber   Int // this is the number of rooms under this room type
-  hotelId       Int
-  hotel     hotel   @relation(fields: [hotelId], references: [id])
-  reservations  Reservation[]
+  id                  Int           @id @default(autoincrement())
+  name                String        @unique
+  description         String
+  price               Float
+  reservationLifetime Int // this is number of minutes a reservation for this room type lasts
+  totalNumber         Int // this is the number of rooms under this room type
+  hotelId             Int
+  hotel               hotel         @relation(fields: [hotelId], references: [id])
+  reservations        Reservation[]
 }
 
 model Reservation {
-  id  Int @id @default(autoincrement())
-  startTime DateTime
-  lifetime  Int   // this is the number of minutes a reservation lasts for
-  occupancy Boolean
+  id                Int      @id @default(autoincrement())
+  startTime         DateTime
+  lifetime          Int // this is the number of minutes a reservation lasts for
+  occupancy         Boolean
   occupancyLifetime Int // this is the number of minutes an occupancy lasts for
 
-  roomTypeId  Int
-  roomType  RoomType  @relation(fields: [roomTypeId], references: [id])
+  roomTypeId Int
+  roomType   RoomType @relation(fields: [roomTypeId], references: [id])
 
-  userId  Int
-  user  user  @relation(fields: [userId], references: [id])
+  userId Int
+  user   user @relation(fields: [userId], references: [id])
 }

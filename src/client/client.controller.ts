@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Render, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Post, Render, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../auth/jwt.guard';
 import { Request } from 'express';
 import { user } from '@prisma/client';
 import { ClientService } from './client.service';
+import { RoomTypeDto } from './dto.client';
 
 @Controller('client')
 export class ClientController {
@@ -45,5 +46,15 @@ export class ClientController {
     return {
       nearbyHotels,
     }
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('hotelRoomTypes')
+  async hotelRoomTypes(@Req() req: Request, @Body() dto: RoomTypeDto) {
+    if(req.user["full_name"]) {
+      // if the user is not a hotel, we throw an error
+      throw new ForbiddenException("users can not create a room type")
+    }
+    return await this.clientService.createHotelRoomType(dto, req.user)
   }
 }

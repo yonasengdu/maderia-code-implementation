@@ -1,12 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, PrismaClient, hotel } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RoomTypeDto } from './dto.client';
 
 @Injectable()
 export class ClientService {
+  async updateNumberOfRoomsOfRoomType(hotelId: any, roomType: {id: number, noOfRooms: number}) {
+    // make sure the hotel owns the roomType
+    const roomTypeData = await this.prisma.roomType.findUnique({
+      where: {id: roomType.id}
+    })
+    if(!roomTypeData) {
+      throw new NotFoundException("room type not found")
+    }
+    if(roomTypeData.hotelId != hotelId) {
+      throw new ForbiddenException("you do not own the room type")
+    }
+    return await this.prisma.roomType.update({
+      where: {id: roomType.id},
+      data: {totalNumber: roomType.noOfRooms}
+    })
+  }
+  async deleteRoomType(hotelId: number ,roomTypeId: number) {
+    // make sure the hotel owns the roomType
+    const roomType = await this.prisma.roomType.findUnique({
+      where: {id: roomTypeId}
+    })
+    if(!roomType) {
+      throw new NotFoundException("room type not found")
+    }
+    if(roomType.hotelId != hotelId) {
+      throw new ForbiddenException("you do not own the room type")
+    }
+    // now delete the room type
+    return await this.prisma.roomType.delete({
+      where: {id: roomTypeId}
+    })
+  }
+
+  async getHotelRoomTypes(user: Express.User) {
+    return await this.prisma.roomType.findMany({
+      where: {}
+    })
+  }
+
   async createHotelRoomType(dto: RoomTypeDto, hotel: Express.User) {
-    console.log(hotel)
     return await this.prisma.roomType.create({
       data: {
         name: dto.name,

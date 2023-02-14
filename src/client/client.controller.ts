@@ -1,9 +1,9 @@
-import { Body, Controller, ForbiddenException, Get, Post, Render, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, Patch, Post, Render, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../auth/jwt.guard';
 import { Request } from 'express';
 import { user } from '@prisma/client';
 import { ClientService } from './client.service';
-import { RoomTypeDto } from './dto.client';
+import { RoomTypeDto, UpdateNoOfRoomsDto, deleteRoomTypeDto } from './dto.client';
 
 @Controller('client')
 export class ClientController {
@@ -56,5 +56,35 @@ export class ClientController {
       throw new ForbiddenException("users can not create a room type")
     }
     return await this.clientService.createHotelRoomType(dto, req.user)
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('hotelRoomTypes')
+  async getHotelRoomTypes(@Req() req: Request){
+    if(req.user['full_name']) {
+      // if the user is not a hotel, we throw an error
+      throw new ForbiddenException("users do not have room types")
+    }
+    return await this.clientService.getHotelRoomTypes(req.user)
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete('hotelRoomTypes')
+  async deleteRoomType(@Req() req: Request, @Body() data: deleteRoomTypeDto) {
+    if(req.user['full_name']) {
+      // if the user is not a hotel, we throw an error
+      throw new ForbiddenException("users can not delete room types")
+    }
+    return await this.clientService.deleteRoomType(req.user['id'], data.id)
+  }
+
+  @UseGuards(JwtGuard)
+  @Patch('hotelRoomTypes')
+  async updateNumberOfRoomsOfRoomType(@Req() req: Request, @Body() data: UpdateNoOfRoomsDto) {
+    if(req.user['full_name']) {
+      // if the user is not a hotel, we throw an error
+      throw new ForbiddenException("users can not update room types")
+    }
+    return this.clientService.updateNumberOfRoomsOfRoomType(req.user['id'], data)
   }
 }

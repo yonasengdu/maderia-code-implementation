@@ -17,3 +17,18 @@ export class RoomTypeDto {
   @IsNumber()
   totalNumber: number;
 }
+
+export class deleteRoomTypeDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number
+}
+
+export class UpdateNoOfRoomsDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number
+  @IsNotEmpty()
+  @IsNumber()
+  noOfRooms: number
+}

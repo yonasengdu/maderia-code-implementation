@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../font-awesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="../font-awesome/css/all.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Rubik:wght@300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script defer src="/client/script/hotelManagement.js"></script>
+
+    <title>Maderia</title>
+  </head>
+  <body>
+    <header class="header-sign-in">
+      <div class="container">
+        <nav class="nav">
+          <a href="#" class="nav__logo">maderia.com</a>
+          <div class="nav-links">
+            <a class="nav-link" href="#">
+              <i class="fa-light fa-globe nav-icon"></i> English</a
+            >
+            <a class="nav-link btn btn-less" href="#"> Packages</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section class="hotelManagement">
+        <h1 class="heading-secondary">Hotel Room Management</h1>
+        <div class="grid grid-2-col-lg-sm">
+          <div class="cards grid grid-3-col">
+            <div class="card" data-id="">
+              <div class="card-head-box">
+                <h2 class="heading-secondary">VIP</h2>
+                <button class="btn btn-blue">Delete</button>
+              </div>
+              <table>
+                <tr>
+                  <td>Room type</td>
+                  <td>vip</td>
+                </tr>
+
+                <tr>
+                  <td>Lifetime</td>
+                  <td>180"</td>
+                </tr>
+
+                <tr>
+                  <td>Total</td>
+                  <td>233</td>
+                </tr>
+
+                <tr>
+                  <td>Reserved</td>
+                  <td>123</td>
+                </tr>
+                <tr>
+                  <td>Occupied</td>
+                  <td>123</td>
+                </tr>
+              </table>
+              <div class="decription">
+                <h2>Description</h2>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
+                  non nesciunt obcaecati itaque earum in corporis quo. Cumque
+                  voluptates optio illum
+                </p>
+              </div>
+              <div class="buttons">
+                <button class="btn btn-blue">Add Room</button>
+                <button class="btn btn-blue">Remove Room</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="room-type-form">
+            <div class="form-box">
+              <h2 class="heading-tertiary">Add Room Type</h2>
+              <form
+                method="post"
+                action="http://127.0.0.1:3000/client/hotelRoomTypes"
+                class="form"
+              >
+                <label for="roomtype" class="form-label">Room type Name</label>
+                <input
+                  class="form-input"
+                  id="roomtype"
+                  type="text"
+                  name="name"
+                  required
+                />
+
+                <label for="numberofRooms" class="form-label"
+                  >Number of Rooms</label
+                >
+                <input
+                  class="form-input"
+                  id="numberofRooms"
+                  type="number"
+                  name="totalNumber"
+                  required
+                />
+
+                <label for="Price" class="form-label">Price</label>
+                <input
+                  class="form-input"
+                  id="Price"
+                  type="number"
+                  name="price"
+                  required
+                />
+
+                <label for="time" class="form-label"
+                  >Reservation expiry Time(in minute)</label
+                >
+                <input
+                  class="form-input"
+                  id="Price"
+                  type="number"
+                  name="reservationLifetime"
+                  required
+                />
+
+                <label for="Description" class="form-label">Description</label>
+
+                <textarea
+                  class="form-textarea"
+                  id="Description"
+                  type="text"
+                  name="description"
+                  required
+                >
+                </textarea>
+
+                <button class="btn btn-blue btn-register">Add Room Type</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

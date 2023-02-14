@@ -1,3 +1,5 @@
+import { ParseIntPipe, UsePipes } from '@nestjs/common';
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class RoomTypeDto {
@@ -9,12 +11,15 @@ export class RoomTypeDto {
   description: string;
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => Number.parseInt(value))
   price: number;
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => Number.parseInt(value))
   reservationLifetime: number;
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => Number.parseInt(value))
   totalNumber: number;
 }
 
@@ -27,8 +32,10 @@ export class deleteRoomTypeDto {
 export class UpdateNoOfRoomsDto {
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => Number.parseInt(value))
   id: number
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => Number.parseInt(value))
   noOfRooms: number
 }

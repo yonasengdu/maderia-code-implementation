@@ -4,6 +4,7 @@ import { Request } from 'express';
 import { user } from '@prisma/client';
 import { ClientService } from './client.service';
 import { RoomTypeDto, UpdateNoOfRoomsDto, deleteRoomTypeDto } from './dto.client';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('client')
 export class ClientController {
@@ -49,6 +50,7 @@ export class ClientController {
   }
 
   @UseGuards(JwtGuard)
+  @Render('hotelManagement')
   @Post('hotelRoomTypes')
   async hotelRoomTypes(@Req() req: Request, @Body() dto: RoomTypeDto) {
     if(req.user["full_name"]) {
@@ -86,5 +88,12 @@ export class ClientController {
       throw new ForbiddenException("users can not update room types")
     }
     return this.clientService.updateNumberOfRoomsOfRoomType(req.user['id'], data)
+  }
+
+  @UseGuards(JwtGuard)
+  @Render('hotelManagement')
+  @Get('roomManagement')
+  roomManagement() {
+    return {}
   }
 }

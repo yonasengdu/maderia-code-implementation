@@ -38,9 +38,9 @@ export class ClientService {
     })
   }
 
-  async getHotelRoomTypes(user: Express.User) {
+  async getHotelRoomTypes(hotel: Express.User) {
     return await this.prisma.roomType.findMany({
-      where: {}
+      where: {hotelId: hotel['id']}
     })
   }
 

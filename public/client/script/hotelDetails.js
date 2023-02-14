@@ -1,5 +1,6 @@
 "use strict";
-const cards = document.querySelector(".cards");
+const cardBox = document.querySelector(".cards");
+const hotelDetailSection = document.querySelector(".hotelDetail")
 
 class HotelDetails {
   constructor() {
@@ -7,19 +8,30 @@ class HotelDetails {
   }
 
   async renderReservationCards() {
-    const response = await fetch(
-      "http://127.0.0.1:3000/client/hotelReservations"
-    );
-    const cards = await response.json();
-    let cardHtml = "";
+   const id =  hotelDetailSection.dataset.id
+    const data = {
+      id:id
+    }
+    const request = await fetch("http://127.0.0.1:3000/client/hotelRoomData", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const cards = await request.json();
+    console.log(cards)
+   let cardHtml = "";
     cards.forEach((card) => {
       cardHtml += `
-      <div class="card" data-id="${card.roomTypeId}">
-      <h2 class="heading-secondary u-centering">${card.roomTypeName}</h2>
+      <div class="card" data-id="${card.id}">
+      <h2 class="heading-secondary u-centering">${card.name}</h2>
       <table>
         <tr>
           <td>Room type</td>
-          <td>${card.roomTypeName}</td>
+          <td>${card.name}</td>
         </tr>
 
         <tr>
@@ -29,32 +41,29 @@ class HotelDetails {
 
         <tr>
           <td>Price</td>
-          <td>$${card.roomTypePrice}</td>
+          <td>$${card.price}</td>
         </tr>
       </table>
       <div class="decription">
         <h2>Description</h2>
         <p>
-        ${card.roomTypeDesc}
+        ${card.description}
         </p>
       </div>
       <div class="u-centering">
         <button class="btn btn-blue btn-reserved"  ${
           !card.available ? "disabled" : ""
-        }>Reserve</button>
+        } onClick="hotelDetail.reserve(id)">Reserve</button>
       </div>
     </div>
       `;
     });
 
-    cards.innerHTML = cardHtml;
-    const btnReserved = document.querySelector(".btn-reserved");
-
-    btnReserved.addEventListener("click", this.reserve.bind(this));
+    cardBox.innerHTML = cardHtml;
+  
   }
 
-  async reserve(e) {
-    const id = e.target.closest(".card").dataset.id;
+  async reserve(id) {
     const data = {
       roomTypeId: id,
     };
@@ -71,4 +80,4 @@ class HotelDetails {
   }
 }
 
-const hotelManagement = new HotelDetails();
+const hotelDetail = new HotelDetails();

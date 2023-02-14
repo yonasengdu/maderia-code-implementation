@@ -23,12 +23,6 @@ export class RoomTypeDto {
   totalNumber: number;
 }
 
-export class deleteRoomTypeDto {
-  @IsNotEmpty()
-  @IsNumber()
-  id: number
-}
-
 export class UpdateNoOfRoomsDto {
   @IsNotEmpty()
   @IsNumber()
@@ -38,4 +32,12 @@ export class UpdateNoOfRoomsDto {
   @IsNumber()
   @Transform(({ value }) => Number.parseInt(value))
   noOfRooms: number
+}
+
+
+export class SingleIdDto {
+  @IsNotEmpty()
+  @IsNumber()
+  @Transform(({ value }) => Number.parseInt(value))
+  id: number
 }

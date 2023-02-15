@@ -6,6 +6,13 @@ import { RoomTypeDto } from './dto.client';
 @Injectable()
 export class ClientService {
   constructor(private prisma: PrismaService) {}
+  async getRoomDataForHotel(hotelId: number) {
+    return await this.prisma.roomType.findMany({
+      where: {
+        hotelId: hotelId,
+      }
+    })
+  }
   async updateNumberOfRoomsOfRoomType(hotelId: any, roomType: {id: number, noOfRooms: number}) {
     // make sure the hotel owns the roomType
     const roomTypeData = await this.prisma.roomType.findUnique({
@@ -39,9 +46,9 @@ export class ClientService {
     })
   }
 
-  async getHotelRoomTypes(user: Express.User) {
+  async getHotelRoomTypes(hotel: Express.User) {
     return await this.prisma.roomType.findMany({
-      where: {}
+      where: {hotelId: hotel['id']}
     })
   }
 

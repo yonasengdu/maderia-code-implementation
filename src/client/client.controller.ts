@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, ForbiddenException, Get, Patch, Post, Render, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, Param, ParseIntPipe, Patch, Post, Render, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../auth/jwt.guard';
 import { Request } from 'express';
 import { user } from '@prisma/client';
 import { ClientService } from './client.service';
-import { RoomTypeDto, UpdateNoOfRoomsDto, deleteRoomTypeDto } from './dto.client';
+import { RoomTypeDto, UpdateNoOfRoomsDto, SingleIdDto } from './dto.client';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('client')
 export class ClientController {
@@ -49,6 +50,7 @@ export class ClientController {
   }
 
   @UseGuards(JwtGuard)
+  @Render('hotelManagement')
   @Post('hotelRoomTypes')
   async hotelRoomTypes(@Req() req: Request, @Body() dto: RoomTypeDto) {
     if(req.user["full_name"]) {
@@ -70,7 +72,7 @@ export class ClientController {
 
   @UseGuards(JwtGuard)
   @Delete('hotelRoomTypes')
-  async deleteRoomType(@Req() req: Request, @Body() data: deleteRoomTypeDto) {
+  async deleteRoomType(@Req() req: Request, @Body() data: SingleIdDto) {
     if(req.user['full_name']) {
       // if the user is not a hotel, we throw an error
       throw new ForbiddenException("users can not delete room types")
@@ -86,5 +88,25 @@ export class ClientController {
       throw new ForbiddenException("users can not update room types")
     }
     return this.clientService.updateNumberOfRoomsOfRoomType(req.user['id'], data)
+  }
+
+  @UseGuards(JwtGuard)
+  @Render('hotelManagement')
+  @Get('roomManagement')
+  roomManagement() {
+    return {}
+  }
+
+  @UseGuards(JwtGuard)
+  @Render('hotelDetails')
+  @Get('hotelDetail/:hotelId')
+  hotelDetail(@Param('hotelId', new ParseIntPipe()) hotelId: number) {
+    return {hotelId: hotelId}
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('hotelRoomData')
+  async hotelRoomData(@Body() data: SingleIdDto) {
+    return await this.clientService.getRoomDataForHotel(data.id)
   }
 }

@@ -5,6 +5,7 @@ import { RoomTypeDto } from './dto.client';
 
 @Injectable()
 export class ClientService {
+  constructor(private prisma: PrismaService) {}
   async updateNumberOfRoomsOfRoomType(hotelId: any, roomType: {id: number, noOfRooms: number}) {
     // make sure the hotel owns the roomType
     const roomTypeData = await this.prisma.roomType.findUnique({
@@ -56,7 +57,7 @@ export class ClientService {
       }
     })
   }
-  constructor(private prisma: PrismaService) {}
+  
 
   /**
    * This service method get's location of a user and returns a list of the top n closest

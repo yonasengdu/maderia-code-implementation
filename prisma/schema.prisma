@@ -11,15 +11,14 @@ datasource db {
 }
 
 model user {
-  id            Int    @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   full_name     String
-  user_name     String @unique
-  email         String @unique
+  user_name     String        @unique
+  email         String        @unique
   password_hash String
-  image         String @default("default-b92a3903-16e4-49ce-be9d-53ff8c0fd24e.png")
-  review       review[]
-  reservations Reservation[]
-
+  image         String        @default("default-b92a3903-16e4-49ce-be9d-53ff8c0fd24e.png")
+  review        review[]
+  reservations  Reservation[]
 
   @@map("Users")
 }
@@ -35,12 +34,10 @@ model hotel {
   hotel_image   String     @default("hotel-694bfd2d-0672-4953-893e-a4ebd192ae53.png")
   review        review[]
   roomTypes     RoomType[]
-  averageRating  Int    @default(0)
+  averageRating Int        @default(0)
 
   @@map("Hotels")
 }
-
-
 
 model RoomType {
   id                  Int           @id @default(autoincrement())
@@ -59,7 +56,7 @@ model Reservation {
   startTime         DateTime
   lifetime          Int // this is the number of minutes a reservation lasts for
   occupancy         Boolean
-  occupancyLifetime Int // this is the number of minutes an occupancy lasts for
+  occupancyLifetime Int? // this is the number of minutes an occupancy lasts for
 
   roomTypeId Int
   roomType   RoomType @relation(fields: [roomTypeId], references: [id])
@@ -69,12 +66,11 @@ model Reservation {
 }
 
 model review {
-  id       Int  @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   authorId Int
-  author   user  @relation(fields: [authorId], references: [id])
+  author   user   @relation(fields: [authorId], references: [id])
   hotelId  Int
-  hotel    hotel   @relation(fields: [hotelId], references: [id])
-  rating     Int
-  text       String
+  hotel    hotel  @relation(fields: [hotelId], references: [id])
+  rating   Int
+  text     String
 }
-

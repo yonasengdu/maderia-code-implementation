@@ -218,8 +218,6 @@ export class AuthService {
       client_type: clientType,
     };
     const token = await this.jwt.signAsync(tokenData, {
-      //TODO: change the expiration time to make it realistic.
-      expiresIn: '1h',
       //TODO: pass the secret string with environment variables.
       secret: 'the way we do things',
     });

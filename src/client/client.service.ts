@@ -1,16 +1,69 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, PrismaClient, hotel } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { RoomTypeDto } from './dto.client';
+import { ReservationDto, RoomTypeDto, SingleIdDto } from './dto.client';
 
 @Injectable()
 export class ClientService {
+  async deleteReservation(user: any, data: SingleIdDto) {
+    // check if client is user
+    if(!user.full_name) {
+      throw new ForbiddenException("Hotels can't make or cancel reservations.")
+    }
+    // check if user wons the reservation
+    let reservation = await this.prisma.reservation.findUnique({
+      where: {
+        id: data.id,
+      }
+    });
+    if(reservation.userId != user['id']){
+      throw new ForbiddenException("You did not make the reservation.")
+    }
+    // things seem to be valid. delete the reservation.
+    return await this.prisma.reservation.delete({
+      where: {
+        id: data.id,
+      }
+    });
+  }
+
+  async createReservation(user: any, data: ReservationDto) {
+    // check if the client is a user
+    if(!user.full_name) {
+      throw new ForbiddenException("Hotels are not allowed to reserve a room.")
+    }
+    // and make a new reservation
+    return await this.prisma.reservation.create({
+      data: {
+        startTime: new Date(),
+        lifetime: data.reservationLifetime,
+        occupancy: false,
+        occupancyLifetime: null,
+        userId: user.id,
+        roomTypeId: data.roomTypeId
+      }
+    })
+  }
   async getRoomDataForHotel(hotelId: number) {
-    return await this.prisma.roomType.findMany({
+    let roomTypes =  await this.prisma.roomType.findMany({
       where: {
         hotelId: hotelId,
       }
-    })
+    });
+    // now check if each room type is availabe and append a flag to say available or not
+    for(let roomType of roomTypes) {
+      let reservedAndOccupiedNumber = await this.prisma.reservation.count({
+        where: {
+          roomTypeId: roomType.id,
+        }
+      })
+      if(roomType.totalNumber > reservedAndOccupiedNumber) {
+        roomType['available'] = true;
+      } else {
+        roomType['available'] = false;
+      }
+    }
+    return roomTypes;
   }
   async updateNumberOfRoomsOfRoomType(hotelId: any, roomType: {id: number, noOfRooms: number}) {
     // make sure the hotel owns the roomType

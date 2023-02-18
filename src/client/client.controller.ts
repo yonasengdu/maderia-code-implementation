@@ -3,7 +3,7 @@ import { JwtGuard } from '../auth/jwt.guard';
 import { Request } from 'express';
 import { user } from '@prisma/client';
 import { ClientService } from './client.service';
-import { RoomTypeDto, UpdateNoOfRoomsDto, SingleIdDto } from './dto.client';
+import { RoomTypeDto, UpdateNoOfRoomsDto, SingleIdDto, ReservationDto } from './dto.client';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('client')
@@ -105,8 +105,21 @@ export class ClientController {
   }
 
   @UseGuards(JwtGuard)
-  @Post('hotelRoomData')
+  @Get('hotelRoomData')
   async hotelRoomData(@Body() data: SingleIdDto) {
+    console.log("in")
     return await this.clientService.getRoomDataForHotel(data.id)
+  }
+
+  @UseGuards(JwtGuard)
+  @Post("reservation")
+  async createReservation(@Req() req:Request, @Body() data: ReservationDto){
+    return await this.clientService.createReservation(req.user, data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete('reservation')
+  async deleteReservation(@Req() req: Request, @Body() data: SingleIdDto){
+    return await this.clientService.deleteReservation(req.user, data);
   }
 }

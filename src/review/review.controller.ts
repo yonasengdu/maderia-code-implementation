@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/jwt.guard';
-import { reviewDto } from './review.dto';
+import { reviewDto, updateReviewDto } from './review.dto';
 import { ReviewService } from './review.service';
 
 @Controller('review')
@@ -11,4 +11,39 @@ export class ReviewController {
     async createReview(@Body() dto: reviewDto, @Req() req: any) {
         return await this.reviewService.createReview(dto, req.user.id)
     }
+
+    /**
+     * get all reviews
+     * @returns 
+     */
+
+    @UseGuards(JwtGuard)
+    @Get()
+    async getAllReviews(){
+        return await this.reviewService.getAllReviews();
+    }
+
+
+    /**
+     * 
+     * @param id hotel id
+     * @returns an array of reviews for a specific hotel
+     */
+
+    @Get(':id')
+    async getReviewsForHotel(@Param('id', new ParseIntPipe()) id) {
+      return this.reviewService.getReviewsForHotel(id)
+    }
+
+    @UseGuards(JwtGuard)
+    @Patch(':id')
+    async updateReview(@Body() dto: updateReviewDto,@Param('id', new ParseIntPipe()) reviewId:number, @Req() req: any){
+        return await this.reviewService.updateReview(dto,reviewId,req.user.id)
+    }
+
+
+
+
+
+
 }

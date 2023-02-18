@@ -5,6 +5,7 @@ import { ReservationDto, RoomTypeDto, SingleIdDto } from './dto.client';
 
 @Injectable()
 export class ClientService {
+constructor(private prisma: PrismaService) {}
   async deleteReservation(user: any, data: SingleIdDto) {
     // check if client is user
     if(!user.full_name) {
@@ -44,6 +45,7 @@ export class ClientService {
       }
     })
   }
+  
   async getRoomDataForHotel(hotelId: number) {
     let roomTypes =  await this.prisma.roomType.findMany({
       where: {
@@ -116,7 +118,7 @@ export class ClientService {
       }
     })
   }
-  constructor(private prisma: PrismaService) {}
+  
 
   /**
    * This service method get's location of a user and returns a list of the top n closest

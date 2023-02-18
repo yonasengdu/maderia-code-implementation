@@ -315,3 +315,5 @@ export class AuthService {
 
   
 }
+
+// let sample = new AuthService(new PrismaService(), new JwtService())

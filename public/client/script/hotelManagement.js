@@ -9,7 +9,7 @@ class HotelManagement {
 
   async renderHotelTypeCards() {
     console.log("in renderHotelTypes")
-    const response = await fetch("http://127.0.0.1:3000/client/hotelRoomTypes");
+    const response = await fetch("http://127.0.0.1:3000/client/hotelRoomTypes", {credentials: "same-origin"});
     const cards = await response.json();
     console.log({cards,})
     let cardHtml = "";

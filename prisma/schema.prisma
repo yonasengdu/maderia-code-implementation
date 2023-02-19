@@ -52,11 +52,13 @@ model RoomType {
 }
 
 model Reservation {
-  id                Int      @id @default(autoincrement())
-  startTime         DateTime
-  lifetime          Int // this is the number of minutes a reservation lasts for
-  occupancy         Boolean
-  occupancyLifetime Int? // this is the number of minutes an occupancy lasts for
+  id                  Int      @id @default(autoincrement())
+  startTime           DateTime
+  lifetime            Int // this is the number of minutes a reservation lasts for
+  expiryTime          DateTime // the time at which the reservation expires (oblivously)
+  occupancy           Boolean
+  occupancyLifetime   Int? // this is the number of minutes an occupancy lasts for
+  occupancyExpiryTime Int?
 
   roomTypeId Int
   roomType   RoomType @relation(fields: [roomTypeId], references: [id])

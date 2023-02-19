@@ -107,7 +107,6 @@ export class ClientController {
   @UseGuards(JwtGuard)
   @Get('hotelRoomData')
   async hotelRoomData(@Body() data: SingleIdDto) {
-    console.log("in")
     return await this.clientService.getRoomDataForHotel(data.id)
   }
 

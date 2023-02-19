@@ -47,8 +47,4 @@ export class ReservationDto {
   @IsNumber()
   @Transform(({ value }) => Number.parseInt(value))
   roomTypeId: number
-  @IsNotEmpty()
-  @IsNumber()
-  @Transform(({ value }) => Number.parseInt(value))
-  reservationLifetime: number   // number of minutes the reservation lasts for
 }

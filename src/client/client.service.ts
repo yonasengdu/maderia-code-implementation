@@ -33,11 +33,25 @@ constructor(private prisma: PrismaService) {}
     if(!user.full_name) {
       throw new ForbiddenException("Hotels are not allowed to reserve a room.")
     }
+    // fetch the room type to get the reservationLifetime
+    const roomType = await this.prisma.roomType.findUnique({
+      where: {
+        id: data.roomTypeId,
+      }
+    })
+    if(!roomType) {
+      throw new NotFoundException("The room no longer is available.")
+    }
+    // calculate the expiry time
+    const expiryTime = new Date()
+    expiryTime.setMinutes(expiryTime.getMinutes() + roomType.reservationLifetime);
+  
     // and make a new reservation
     return await this.prisma.reservation.create({
       data: {
         startTime: new Date(),
-        lifetime: data.reservationLifetime,
+        lifetime: roomType.reservationLifetime,
+        expiryTime: expiryTime,
         occupancy: false,
         occupancyLifetime: null,
         userId: user.id,

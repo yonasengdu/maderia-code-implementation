@@ -117,8 +117,15 @@ export class ClientController {
   }
 
   @UseGuards(JwtGuard)
-  @Delete('reservation')
+  @Delete('myReservations')
   async deleteReservation(@Req() req: Request, @Body() data: SingleIdDto){
-    return await this.clientService.deleteReservation(req.user, data);
+    return await this.clientService.deleteUserReservation(req.user, data);
+  }
+
+  // let users see the reservations they made
+  @UseGuards(JwtGuard)
+  @Get('myReservations')
+  async getUserReservations(@Req() req: Request) {
+    return await this.clientService.getUserReservations(req.user);
   }
 }

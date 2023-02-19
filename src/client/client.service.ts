@@ -6,7 +6,20 @@ import { ReservationDto, RoomTypeDto, SingleIdDto } from './dto.client';
 @Injectable()
 export class ClientService {
 constructor(private prisma: PrismaService) {}
-  async deleteReservation(user: any, data: SingleIdDto) {
+
+  async getUserReservations(user: any) {
+    // check if the client is a user
+    if(!user.full_name){
+      throw new ForbiddenException("Not allowed for hotels.")
+    }
+    return await this.prisma.reservation.findMany({
+      where: {
+        userId: user.id,
+      }
+    })
+  }
+
+  async deleteUserReservation(user: any, data: SingleIdDto) {
     // check if client is user
     if(!user.full_name) {
       throw new ForbiddenException("Hotels can't make or cancel reservations.")
@@ -166,5 +179,16 @@ constructor(private prisma: PrismaService) {}
     nearby.forEach((value)=> {delete value.password_hash})
     // return the top n
     return nearby.slice(0, n);
+  }
+
+  // a utility method to delete exxpired reservations and occupancies
+  async updateDatabase() {
+    await this.prisma.reservation.deleteMany({
+      where: {
+        expiryTime: {
+          lte: new Date(),
+        }
+      }
+    });
   }
 }

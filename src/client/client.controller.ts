@@ -128,4 +128,10 @@ export class ClientController {
   async getUserReservations(@Req() req: Request) {
     return await this.clientService.getUserReservations(req.user);
   }
+
+  @UseGuards(JwtGuard)
+  @Get('reservationManagement')
+  async getHotelReservationsAndOccupancies(@Req() req: Request) {
+    return await this.clientService.getHotelReservationsAndOccupancies(req.user);
+  }
 }

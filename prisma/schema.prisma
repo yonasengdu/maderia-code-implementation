@@ -48,11 +48,11 @@ model RoomType {
   totalNumber         Int // this is the number of rooms under this room type
   hotelId             Int
   hotel               hotel         @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  reservations        Reservation[] 
+  reservations        Reservation[]
 }
 
 model Reservation {
-  id                  Int      @id @default(autoincrement())
+  id                  Int       @id @default(autoincrement())
   startTime           DateTime
   lifetime            Int // this is the number of minutes a reservation lasts for
   expiryTime          DateTime // the time at which the reservation expires (oblivously)
@@ -65,6 +65,9 @@ model Reservation {
 
   userId Int
   user   user @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  hotelId Int // these redundancies are intended to number of fetches in different schenarios 
+              //with the sense that there will be no update operation on reservation entries.
 }
 
 model review {

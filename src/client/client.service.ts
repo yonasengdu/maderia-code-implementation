@@ -11,6 +11,30 @@ import { ReservationDto, RoomTypeDto, SingleIdDto } from './dto.client';
 export class ClientService {
   constructor(private prisma: PrismaService) {}
 
+  async getHotelReservationsAndOccupancies(user: any) {
+    // check if the client is a hotel
+    if(user.full_name) {
+      throw new ForbiddenException("Allowed only for hotels.")
+    }
+    // then update the database, deleting expired items
+    await this.updateDatabase()
+    // now fetch data and send ... 
+    let reservations = await this.prisma.reservation.findMany({
+      where: {
+        hotelId: user.id,
+        occupancy: false,
+      }
+    });
+    let occupancies = await this.prisma.reservation.findMany({
+      where: {
+        hotelId: user.id,
+        occupancy: true,
+      }
+    });
+
+    return {reservations, occupancies,}
+  }
+
   async getUserReservations(user: any) {
     // check if the client is a user
     if (!user.full_name) {
@@ -78,6 +102,7 @@ export class ClientService {
         occupancyLifetime: null,
         userId: user.id,
         roomTypeId: data.roomTypeId,
+        hotelId: roomType.hotelId,
       },
     });
   }

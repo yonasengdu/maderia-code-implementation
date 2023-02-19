@@ -47,8 +47,8 @@ model RoomType {
   reservationLifetime Int // this is number of minutes a reservation for this room type lasts
   totalNumber         Int // this is the number of rooms under this room type
   hotelId             Int
-  hotel               hotel         @relation(fields: [hotelId], references: [id])
-  reservations        Reservation[]
+  hotel               hotel         @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  reservations        Reservation[] 
 }
 
 model Reservation {
@@ -58,13 +58,13 @@ model Reservation {
   expiryTime          DateTime // the time at which the reservation expires (oblivously)
   occupancy           Boolean
   occupancyLifetime   Int? // this is the number of minutes an occupancy lasts for
-  occupancyExpiryTime Int?
+  occupancyExpiryTime DateTime?
 
   roomTypeId Int
-  roomType   RoomType @relation(fields: [roomTypeId], references: [id])
+  roomType   RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
 
   userId Int
-  user   user @relation(fields: [userId], references: [id])
+  user   user @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model review {

@@ -48,3 +48,17 @@ export class ReservationDto {
   @Transform(({ value }) => Number.parseInt(value))
   roomTypeId: number
 }
+
+export class UpdateReservationDto {
+  // this dto is explicitely only used to promote reservations into occupancies
+  // it's highly discouraged to update any field on a reservation but 'occupancy',
+  // 'occupancyLifetime', and 'occupancyExpiryTime'
+  @IsNotEmpty()
+  @IsNumber()
+  @Transform(({ value }) => Number.parseInt(value))
+  reservationId: number
+  @IsNotEmpty()
+  @IsNumber()
+  @Transform(({ value }) => Number.parseInt(value))
+  occupancyLifetime: number
+}

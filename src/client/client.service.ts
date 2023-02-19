@@ -5,12 +5,44 @@ import {
 } from '@nestjs/common';
 import { Prisma, PrismaClient, hotel } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ReservationDto, RoomTypeDto, SingleIdDto } from './dto.client';
+import { ReservationDto, RoomTypeDto, SingleIdDto, UpdateReservationDto } from './dto.client';
 
 @Injectable()
 export class ClientService {
   constructor(private prisma: PrismaService) {}
 
+  async promoteReservationToOccupancy(user: any, data: UpdateReservationDto) {
+    // check if the client is a hotel
+    if(user.full_name) {
+      throw new ForbiddenException("Allowed only for hotels")
+    }
+    // check if the reservation belongs to the hotel
+    const reservation = await this.prisma.reservation.findUnique({
+      where: {
+        id: data.reservationId,
+      }
+    });
+    if(!reservation) {
+      throw new NotFoundException("Reservation could not be found.");
+    }
+    if(reservation.hotelId != user.id) {
+      throw new ForbiddenException("You do not own the reservation.");
+    }
+    // update the reservation
+    const occupancyExpiryTime = new Date();
+    occupancyExpiryTime.setMinutes(occupancyExpiryTime.getMinutes() + data.occupancyLifetime)
+    return await this.prisma.reservation.update({
+      where: {
+        id: data.reservationId,
+      },
+      data: {
+        occupancy: true,
+        occupancyLifetime: data.occupancyLifetime,
+        occupancyExpiryTime: occupancyExpiryTime,
+      }
+    })
+  }
+  
   async getHotelReservationsAndOccupancies(user: any) {
     // check if the client is a hotel
     if(user.full_name) {
@@ -46,6 +78,7 @@ export class ClientService {
     return await this.prisma.reservation.findMany({
       where: {
         userId: user.id,
+        occupancy: false,
       },
     });
   }

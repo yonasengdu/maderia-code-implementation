@@ -3,7 +3,7 @@ import { JwtGuard } from '../auth/jwt.guard';
 import { Request } from 'express';
 import { user } from '@prisma/client';
 import { ClientService } from './client.service';
-import { RoomTypeDto, UpdateNoOfRoomsDto, SingleIdDto, ReservationDto } from './dto.client';
+import { RoomTypeDto, UpdateNoOfRoomsDto, SingleIdDto, ReservationDto, UpdateReservationDto } from './dto.client';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('client')
@@ -133,5 +133,11 @@ export class ClientController {
   @Get('reservationManagement')
   async getHotelReservationsAndOccupancies(@Req() req: Request) {
     return await this.clientService.getHotelReservationsAndOccupancies(req.user);
+  }
+
+  @UseGuards(JwtGuard)
+  @Patch('reservation')
+  async promoteReservationToOccupancy(@Req() req: Request, @Body() data: UpdateReservationDto) {
+    return await this.clientService.promoteReservationToOccupancy(req.user, data);
   }
 }

@@ -28,7 +28,7 @@ export class ClientController {
     } else {
       return {
         name: client.hotel_name,
-        client_type: 'hotel'
+        client_type: 'hotel',
       }
     }
   }

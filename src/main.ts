@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
+import { HttpExceptionFilter } from './app.filter';
 
 
 async function bootstrap() {
@@ -17,7 +18,7 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-
+    app.useGlobalFilters(new HttpExceptionFilter())
   app.use(cookieParser());  // this allows for storing into, and parsing a jwt from a cookie
 
   app.useStaticAssets(join(__dirname, '..', 'public'));

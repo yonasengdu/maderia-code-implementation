@@ -1,14 +1,17 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Render, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/jwt.guard';
-import { reviewDto, updateReviewDto } from './review.dto';
+import { CreatereviewDto, reviewDto, updateReviewDto } from './review.dto';
 import { ReviewService } from './review.service';
 
 @Controller('review')
 export class ReviewController {
     constructor(private reviewService:ReviewService){}
+
     @UseGuards(JwtGuard)
     @Post()
-    async createReview(@Body() dto: reviewDto, @Req() req: any) {
+    @Render('hotelDetails')
+    async createReview(@Body() dto: any, @Req() req: any) {
+        console.log(dto)
         return await this.reviewService.createReview(dto, req.user.id)
     }
 
@@ -16,6 +19,12 @@ export class ReviewController {
     async getAllHotels() {
     return  await this.reviewService.getAllHotels();
         }
+
+
+    @Post(':id')
+    async getReviewsForHotel(@Param('id', new ParseIntPipe()) id) {
+          return this.reviewService.getReviewsForHotel(id)
+    }
 
     /**
      * get all reviews
@@ -35,10 +44,7 @@ export class ReviewController {
      * @returns an array of reviews for a specific hotel
      */
 
-    @Get(':id')
-    async getReviewsForHotel(@Param('id', new ParseIntPipe()) id) {
-      return this.reviewService.getReviewsForHotel(id)
-    }
+    
 
     @UseGuards(JwtGuard)
     @Patch(':id')

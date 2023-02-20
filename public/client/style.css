@@ -684,6 +684,10 @@ body {
   .my-reservation .btn-blue {
     background-color: orangered; }
 
+.hotel-review .form-box {
+  width: 80%;
+  margin-left: 3.5rem; }
+
 .reservationManagement {
   padding: 0 10rem;
   margin-bottom: 6rem; }
@@ -722,10 +726,11 @@ body {
 
 .popup-form {
   padding: 6rem; }
-  .popup-form .input-id {
-    opacity: 0; }
   .popup-form .form-input {
     margin-bottom: 2rem; }
 
 .showPopup .popup {
   width: 30%; }
+
+.input-id {
+  opacity: 0; }

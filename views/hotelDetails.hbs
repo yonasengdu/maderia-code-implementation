@@ -33,7 +33,7 @@
       </div>
     </header>
     <main>
-      <section class="hotelDetail" data-id="{{ hotelId }}">
+      <section class="hotelDetail hotelManagement" data-id="{{ hotelId }}">
         <h1 class="heading-secondary">Hotel Room Types</h1>
         <div class="grid grid-2-col-lg-sm">
           <div class="cards grid grid-3-col">
@@ -72,6 +72,7 @@
           <div class="hotel-review">
             <h2 class="heading-tertiary">Reviews</h2>
             <div class="cards">
+
               <div class="card card-review">
                 <div class="rating-box">
                   <p>Rating</p>
@@ -97,6 +98,7 @@
                 </blockquote>
                 <p>Jonas J.</p>
               </div>
+
               <div class="card card-review">
                 <div class="rating-box">
                   <p>Rating</p>
@@ -123,7 +125,46 @@
                 <p>Jonas J.</p>
               </div>
             </div>
+                        <div class="form-box">
+              <h2 class="heading-tertiary">Add Review</h2>
+
+              <form
+                method="post"
+                action="http://localhost:3000/review"
+                class="form"
+              >
+                <input
+                  class="input-id"
+                  id="roomtype"
+                  type="text"
+                  name="id"
+                  required
+                />
+                <label for="Description" class="form-label">Review</label>
+
+                <textarea
+                  class="form-textarea form-input--password"
+                  id="Description"
+                  type="text"
+                  name="text"
+                  required
+                >
+                </textarea>
+
+                <label for="numberofRooms" class="form-label">Rate</label>
+                <input
+                  class="form-input form-input--password"
+                  id="numberofRooms"
+                  type="text"
+                  name="rating"
+                  required
+                />
+
+                <button class="btn btn-blue btn-register">Add Review</button>
+              </form>
+            </div>
           </div>
+
         </div>
       </section>
     </main>

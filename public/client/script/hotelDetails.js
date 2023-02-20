@@ -1,10 +1,16 @@
 "use strict";
 const cardBox = document.querySelector(".cards");
 const hotelDetailSection = document.querySelector(".hotelDetail")
+const inputId = document.querySelector(".input-id")
+
 
 class HotelDetails {
+  cards = []
   constructor() {
-    this.renderReservationCards();
+    ( async function (){
+      await this.renderReservationCards();
+      this.renderReview(3434);
+    }.bind(this)())
   }
 
   async renderReservationCards() {
@@ -20,11 +26,13 @@ class HotelDetails {
       },
       body: JSON.stringify(data),
     });
-
-    const cards = await request.json();
-    console.log(cards)
+     this.cards = await request.json();
+    // if(this.cards[0].hotelId){
+    
+    // }
+      // inputId.value = this.cards[0].hotelId
    let cardHtml = "";
-    cards.forEach((card) => {
+    this.cards.forEach((card) => {
       cardHtml += `
       <div class="card" data-id="${card.id}">
       <h2 class="heading-secondary u-centering">${card.name}</h2>
@@ -59,9 +67,7 @@ class HotelDetails {
     </div>
       `;
     });
-
     cardBox.innerHTML = cardHtml;
-  
   }
 
   async reserve(id) {
@@ -79,6 +85,26 @@ class HotelDetails {
     });
     this.renderReservationCards();
     location = "http://localhost:3000/client/myReservationsPage"
+  }
+
+
+  async renderReview(id){
+    const data = {
+      hotelId:id,
+    }
+    const request = await fetch("http://localhost:3000/review", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const reviews = await request.json();
+    
+    console.log(reviews,"review")
+
   }
 }
 

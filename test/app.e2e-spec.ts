@@ -4,7 +4,7 @@ import { Test } from '@nestjs/testing';
 import { appendFile } from 'fs';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { AppModule } from '../src/app.module';
-import { AuthDto, HotelSignupDto, UserSignupDto } from '../src/auth/dto/auth.dto';
+import { HotelSignupDto, UserSignupDto } from '../src/auth/dto/auth.dto';
 describe('app e2e',()=>{
     let app:INestApplication;
     let prisma:PrismaService;

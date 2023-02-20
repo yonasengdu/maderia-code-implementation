@@ -1,5 +1,7 @@
 "use strict";
 const cardBox = document.querySelector(".cards");
+const reviewcardBox = document.querySelector(".cards-review");
+
 const hotelDetailSection = document.querySelector(".hotelDetail")
 const inputId = document.querySelector(".input-id")
 
@@ -90,15 +92,57 @@ class HotelDetails {
     location = "http://localhost:3000/client/myReservationsPage"
   }
 
-
+  hotelRating(rate){
+    let stars = [];
+      for(let i = 1;i<= 5;i++){
+        if(i <= rate){
+          stars.push('<i class="fa-solid fa-star"></i>')
+        }
+        else{
+          stars.push("<i class='icon-star fa-light fa-star'></i>")
+        }
+      }
+      return stars.join("")
+  }
   async renderReview(id){
     console.log("see")
     const request = await fetch(`http://localhost:3000/review/getReview/${id}`);
-
     const reviews = await request.json();
-    
-
     console.log(reviews,"review")
+    let reviewHtml = "";
+     const obj = this;
+      reviewcardBox.innerHTML =  reviewHtml
+    reviews.forEach(async function(review){
+      const username = await obj.getUserById(review.authorId)
+      reviewHtml += ` <div class="card card-review">
+      <div class="rating-box">
+        <p>Rating</p>
+        <div class="rating">
+          <p>${review.rating}</p>
+          <div>
+           ${obj.hotelRating(review.rating)}
+          </div>
+        </div>
+      </div>
+      <blockquote>
+      ${review.text}
+      </blockquote>
+      <p>${username}</p>
+    </div>`
+
+    console.log(reviewHtml,"html")
+    reviewcardBox.insertAdjacentHTML("beforeend",reviewHtml)
+    })
+    
+  }
+
+
+  async getUserById(userId){
+    const user = await fetch(`http://localhost:3000/review/getUserById/${userId}`);
+    const username  = await user.json();
+    console.log({username:username.full_name})
+    return await username.full_name;
+    
 
   }
 }

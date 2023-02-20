@@ -35,6 +35,7 @@ model hotel {
   review        review[]
   roomTypes     RoomType[]
   averageRating Int        @default(0)
+  
 
   @@map("Hotels")
 }

@@ -62,6 +62,15 @@ export class ReviewService {
         return Review;
     }
 
+    async getUserById(userId:number){
+      let user = await this.prisma.user.findUnique({
+        where:{
+          id:userId
+        }
+      })
+      return user;
+    }
+
     async updateReview(dto:updateReviewDto,reviewId:number,userId:number){
       let updatedReview = await this.updateReviewByHotelId(dto,reviewId,userId)
   

@@ -9,7 +9,12 @@ export class ReviewController {
 
     @Get('getReview/:id')
     async getReviewsForHotel(@Param('id', new ParseIntPipe()) id) {
-          return this.reviewService.getReviewsForHotel(id)
+          return await this.reviewService.getReviewsForHotel(id)
+    }
+
+    @Get('getUserById/:id')
+    async getUserById(@Param('id', new ParseIntPipe()) id){
+        return await this.reviewService.getUserById(id)
     }
 
 

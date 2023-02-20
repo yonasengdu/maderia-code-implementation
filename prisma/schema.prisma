@@ -73,9 +73,14 @@ model Reservation {
 model review {
   id       Int    @id @default(autoincrement())
   authorId Int
-  author   user   @relation(fields: [authorId], references: [id])
+  author   user   @relation(fields: [authorId], references: [id],onDelete: Cascade)
   hotelId  Int
-  hotel    hotel  @relation(fields: [hotelId], references: [id])
+  hotel    hotel  @relation(fields: [hotelId], references: [id],onDelete: Cascade)
   rating   Int
   text     String
+  createdAt DateTime @default(now())
 }
+
+
+
+

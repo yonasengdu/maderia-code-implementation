@@ -67,15 +67,16 @@ model Reservation {
   user   user @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   hotelId Int // these redundancies are intended to number of fetches in different schenarios 
-              //with the sense that there will be no update operation on reservation entries.
+  //with the sense that there will be no update operation on reservation entries.
 }
 
 model review {
-  id       Int    @id @default(autoincrement())
-  authorId Int
-  author   user   @relation(fields: [authorId], references: [id])
-  hotelId  Int
-  hotel    hotel  @relation(fields: [hotelId], references: [id])
-  rating   Int
-  text     String
+  id        Int      @id @default(autoincrement())
+  authorId  Int
+  author    user     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  hotelId   Int
+  hotel     hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  rating    Int
+  text      String
+  createdAt DateTime @default(now())
 }

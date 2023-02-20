@@ -28,7 +28,7 @@ export class ClientController {
     } else {
       return {
         name: client.hotel_name,
-        client_type: 'hotel'
+        client_type: 'hotel',
       }
     }
   }
@@ -105,7 +105,8 @@ export class ClientController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('hotelRoomData')
+  @Post('hotelRoomData')
+  // clients accesing the roomTypes of a hotel (data for the hotelDetail page)
   async hotelRoomData(@Body() data: SingleIdDto) {
     return await this.clientService.getRoomDataForHotel(data.id)
   }
@@ -136,8 +137,27 @@ export class ClientController {
   }
 
   @UseGuards(JwtGuard)
-  @Patch('reservation')
+  @Render("reservationManagement")
+  @Post('promoteReservation')
   async promoteReservationToOccupancy(@Req() req: Request, @Body() data: UpdateReservationDto) {
     return await this.clientService.promoteReservationToOccupancy(req.user, data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Render('my_reservation')
+  @Get('myReservationsPage')
+  getMyReservationsPage(@Req() req: Request) {
+    if(!req.user['full_name']) {
+      throw new ForbiddenException("Not allowed for hotels.")
+    }
+  }
+
+  @UseGuards(JwtGuard)
+  @Render('reservationManagement')
+  @Get('reservationManagementPage')
+  getReservationManagementPage(@Req() req: Request) {
+    if(req.user['full_name']) {
+      throw new ForbiddenException("Not allowed for users.")
+    }
   }
 }

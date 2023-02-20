@@ -110,7 +110,7 @@ class NearHotel {
       </div>
       <p>Rating</p>
     </span>
-    <a class="hmap-item__reserve btn btn-blue" href="#">Reserve</a>
+    <a class="hmap-item__reserve btn btn-blue" href="http://localhost:3000/client/hotelDetail/${data.id}">Reserve</a>
   </li>
     `;
       hotelListContainer.insertAdjacentHTML('beforeend', html);

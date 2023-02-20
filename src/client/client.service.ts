@@ -51,18 +51,33 @@ export class ClientService {
     // then update the database, deleting expired items
     await this.updateDatabase()
     // now fetch data and send ... 
+    // starting with non-promoted reservations
     let reservations = await this.prisma.reservation.findMany({
       where: {
         hotelId: user.id,
         occupancy: false,
       }
     });
+    for(let reservation of reservations) {
+      const user = await this.prisma.user.findUnique({where: {id: reservation.userId}});
+      const roomType = await this.prisma.roomType.findUnique({where: {id: reservation.roomTypeId}});
+      reservation['username'] = user.user_name;
+      reservation['roomType'] = roomType.name;
+    }
+    // then the occupancies ..,
     let occupancies = await this.prisma.reservation.findMany({
       where: {
         hotelId: user.id,
         occupancy: true,
       }
     });
+    for(let occupancy of occupancies) {
+      const user = await this.prisma.user.findUnique({where: {id: occupancy.userId}});
+      const roomType = await this.prisma.roomType.findUnique({where: {id: occupancy.roomTypeId}});
+      occupancy['username'] = user.user_name;
+      occupancy['roomType'] = roomType.name;
+      occupancy['expiryTime'] = occupancy.occupancyExpiryTime;
+    }
 
     return {reservations, occupancies,}
   }
@@ -75,12 +90,31 @@ export class ClientService {
     // update the database (deleting expired reservations) before fetching live reservations
     await this.updateDatabase();
     // then fetch the live reservations
-    return await this.prisma.reservation.findMany({
+    const reservations =  await this.prisma.reservation.findMany({
       where: {
         userId: user.id,
         occupancy: false,
       },
     });
+    // embed the hotel name and the room type name and description in each reservation
+    for(let reservation of reservations) {
+      let theRoomType = await  this.prisma.roomType.findUnique({
+        where: {
+          id: reservation.roomTypeId,
+        }
+      });
+      let hotel = await this.prisma.hotel.findUnique({
+        where: {id: theRoomType.hotelId,}
+      });
+      reservation['hotelName'] = hotel.hotel_name;
+      reservation['roomTypeName'] = theRoomType.name;
+      reservation['roomTypeDescription'] = theRoomType.description;
+      // calculate the minutes left
+      const minutesLeft = (reservation.expiryTime.getTime() - (new Date()).getTime())/60000
+      reservation['minutesLeft'] = minutesLeft;
+    }
+
+    return reservations;
   }
 
   async deleteUserReservation(user: any, data: SingleIdDto) {

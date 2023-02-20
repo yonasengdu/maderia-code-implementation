@@ -22,10 +22,9 @@
       <header class="header-profile col-1">
         <nav class="nav-profile">
           <ul class="nav-profile-links">
-            <li><a class="nav-profile-link" href="#">Home</a></li>
-            <li><a class="nav-profile-link btn btn-less-user" href="#"><span class="package">Packages</span></a></li>
-            <li><a class="nav-profile-link" href="#"><i class="fa-light fa-bell side-bar-icon"></i
-              ></a></li>
+            <li><a class="nav-profile-link" href='index'>Home</a></li>
+        
+    
               <a class="nav-profile-link profile-image"
                 > <img class= "nav-profile-img" src="../img/customer-1.jpg" alt="user-photo" srcset="">
                 <span class="username">{{ user.full_name }}</span>
@@ -35,7 +34,7 @@
         </nav>
       </header>
       <div class="side-bar col-2">
-        <a href="#" class="side-bar-logo">maderia.com</a>
+        <a href='index' class='nav__logo'>maderia.com</a>
         <ul class="side-bar_links">
           <li>
              User Profile
@@ -46,30 +45,8 @@
               ><span>User info</span>
             </a>
           </li>
-          <li class="side-bar__item">
-            <a class="side-bar_link" href="#"
-              ><i class="fa-light fa-heart side-bar-icon"></i
-              ><span>Favorites</span>
-            </a>
-          </li>
-          <li class="side-bar__item">
-            <a class="side-bar_link" href="#"
-              ><i class="fa-light fa-star side-bar-icon"></i
-              ><span>Watchlist</span>
-            </a>
-          </li>
-          <li class="side-bar__item">
-            <a class="side-bar_link" href="#">
-              <i class="fa-light fa-gear side-bar-icon"></i
-              ><span>Settings</span>
-            </a>
-          </li>
-          <li class="side-bar__item">
-            <a class="side-bar_link" href="#"
-              ><i class="fa-light fa-bell side-bar-icon"></i
-              ><span>Notification</span>
-            </a>
-          </li>
+         
+          
           <li class="side-bar__item"><a class="side-bar_link" href="/auth/signout"><i class="fa-light fa-arrow-up-left-from-circle side-bar-icon"></i>Logout</a></li>
         </ul>
       </div>

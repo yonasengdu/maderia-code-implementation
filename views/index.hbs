@@ -19,11 +19,19 @@
     <header class='header'>
       <div class='container'>
         <nav class='nav'>
-          <a href='#' class='nav__logo'>maderia.com</a>
+          <a href='index' class='nav__logo'>maderia.com</a>
           <div class='nav-links'>
             {{#if user}}
+             <a class='nav-link ' href='/client/myReservationsPage'>
+                My Reservation</a>
               <a class='nav-link btn btn-less' href='/client/nearbyHotels'>
                 Nearby hotels</a>
+            {{else}}
+            <a class='nav-link ' href='/client/roomManagement'>
+                Room Management</a>
+            <a class='nav-link ' href='/client/reservationManagementPage'>
+                Reservations</a>
+
             {{/if}}
 
             <a

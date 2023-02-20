@@ -35,7 +35,8 @@ class NearHotel {
       });
       this.data = await response.json();
       this.renderMap.bind(this)();
-      console.log(this.data);
+      console.log(this.data,
+        "data");
     } catch (err) {
       console.error(err);
     }
@@ -93,20 +94,29 @@ class NearHotel {
         .openPopup();
     });
   }
-
+  hotelRating(rate){
+    let stars = [];
+      for(let i = 1;i<= 5;i++){
+        if(i <= rate){
+          stars.push('<i class="fa-solid fa-star"></i>')
+        }
+        else{
+          stars.push("<i class='icon-star fa-light fa-star'></i>")
+        }
+      }
+      return stars.join("")
+  }
   renderHotelList() {
+    let obj = this;
     this.data.nearbyHotels.forEach(function (data) {
       const html = ` <li class="hmap-item btn btn-blue" data-id = "${data.id}">
     <span class="hmap-item__desc"
       ><p class="hmap-item__name">${data.hotel_name}</p>
     </span>
     <span class="hmap-item-rate">
+    <p>${data.averageRating}</p>
       <div class="hmap-item-rate_star">
-        <i class="icon-star fa-light fa-star"></i>
-        <i class="icon-star fa-light fa-star"></i>
-        <i class="icon-star fa-light fa-star"></i>
-        <i class="icon-star fa-light fa-star"></i>
-        <i class="icon-star fa-light fa-star"></i>
+       ${obj.hotelRating(data.averageRating)}
       </div>
       <p>Rating</p>
     </span>

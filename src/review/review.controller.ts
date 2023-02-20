@@ -12,6 +12,11 @@ export class ReviewController {
         return await this.reviewService.createReview(dto, req.user.id)
     }
 
+    @Get('allhotels')
+    async getAllHotels() {
+    return  await this.reviewService.getAllHotels();
+        }
+
     /**
      * get all reviews
      * @returns 
@@ -51,13 +56,7 @@ export class ReviewController {
     async getAverageRating(@Param('id', new ParseIntPipe()) hotelId:number){
         return await this.reviewService.getAverageRating(hotelId)
     }
-    //this is controller is added just for testing only. and it is not supposed to be here so it should be in hotels controller.
-    // it's name should be corrected also.
-    @Put('a')
-    async getAllHotels(){
-        return await this.reviewService.getAllHotels()
-    }
-
+    
 
 
 }

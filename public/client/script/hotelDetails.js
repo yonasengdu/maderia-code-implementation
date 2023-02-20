@@ -12,7 +12,7 @@ class HotelDetails {
     const data = {
       id:id
     }
-    const request = await fetch("http://127.0.0.1:3000/client/hotelRoomData", {
+    const request = await fetch("http://localhost:3000/client/hotelRoomData", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -53,7 +53,7 @@ class HotelDetails {
       <div class="u-centering">
         <button class="btn btn-blue btn-reserved"  ${
           !card.available ? "disabled" : ""
-        } onClick="hotelDetail.reserve(id)">Reserve</button>
+        } onClick="hotelDetail.reserve(${card.id})">Reserve</button>
       </div>
     </div>
       `;
@@ -68,7 +68,7 @@ class HotelDetails {
       roomTypeId: id,
     };
 
-    const request = await fetch("http://127.0.0.1:3000/client/hotelRoomTypes", {
+    const request = await fetch("http://localhost:3000/client/reservation", {
       method: "POST",
       mode: "cors",
       headers: {

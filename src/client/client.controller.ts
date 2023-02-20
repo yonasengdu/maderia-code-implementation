@@ -105,7 +105,8 @@ export class ClientController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('hotelRoomData')
+  @Post('hotelRoomData')
+  // clients accesing the roomTypes of a hotel (data for the hotelDetail page)
   async hotelRoomData(@Body() data: SingleIdDto) {
     return await this.clientService.getRoomDataForHotel(data.id)
   }

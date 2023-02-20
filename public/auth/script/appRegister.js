@@ -127,6 +127,8 @@ class AppRegister extends App {
       this.togglePoint = "user";
       form.setAttribute("action","/auth/userSignUp");
       inputName.setAttribute("name", "full_name");
+      lat.required = false;
+      long.required = false;
     }
     if (activeEl.classList.contains("toggle--hotel")) {
       fromUserLabel.textContent = "Hotel name";
@@ -135,6 +137,8 @@ class AppRegister extends App {
       this.togglePoint = "hotel";
       form.setAttribute("action","/auth/hotelSignUp");
       inputName.setAttribute("name", "hotel_name");
+      lat.required =true;
+      long.required  = true;
     }
     console.log(inputName)
   }

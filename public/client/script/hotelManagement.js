@@ -9,7 +9,7 @@ class HotelManagement {
 
   async renderHotelTypeCards() {
     console.log("in renderHotelTypes")
-    const response = await fetch("http://127.0.0.1:3000/client/hotelRoomTypes", {credentials: "same-origin"});
+    const response = await fetch("http://localhost:3000/client/hotelRoomTypes", {credentials: "same-origin"});
     const cards = await response.json();
     console.log({cards,})
     let cardHtml = "";
@@ -72,7 +72,7 @@ class HotelManagement {
       id: id,
     };
 
-    const request = await fetch("http://127.0.0.1:3000/client/hotelRoomTypes", {
+    const request = await fetch("http://localhost:3000/client/hotelRoomTypes", {
       method: "DELETE",
       mode: "cors",
       headers: {
@@ -93,7 +93,7 @@ class HotelManagement {
       noOfRooms: totalRoom + 1,
     };
 
-    const request = await fetch("http://127.0.0.1:3000/client/hotelRoomTypes", {
+    const request = await fetch("http://localhost:3000/client/hotelRoomTypes", {
       method: "PATCH",
       mode: "cors",
       headers: {
@@ -115,7 +115,7 @@ class HotelManagement {
       noOfRooms: totalRoom - 1,
     };
 
-    const request = await fetch("http://127.0.0.1:3000/client/hotelRoomTypes", {
+    const request = await fetch("http://localhost:3000/client/hotelRoomTypes", {
       method: "PATCH",
       mode: "cors",
       headers: {

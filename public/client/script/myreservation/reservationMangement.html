@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../font-awesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="../font-awesome/css/all.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Rubik:wght@300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+
+    <script defer src="../script/reservationManagement.js"></script>
+
+    <title>Maderia</title>
+  </head>
+  <body>
+    <header class="header-sign-in">
+      <div class="container">
+        <nav class="nav">
+          <a href="#" class="nav__logo">maderia.com</a>
+          <div class="nav-links">
+            <a class="nav-link" href="#">
+              <i class="fa-light fa-globe nav-icon"></i> English</a
+            >
+            <a class="nav-link btn btn-less" href="#"> Packages</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section class="reservationManagement">
+        <h1 class="heading-secondary">Reservation Management</h1>
+        <div class="reservation-box grid grid-2-col">
+          <div class="reservations">
+            <h2 class="reservation-heading">Reservation</h2>
+            <div class="search">
+              <input
+                class="search-input"
+                type="text"
+                placeholder="Search"
+                name=""
+                id=""
+              />
+              <button class="search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+
+            <div class="cards">
+              <div class="card" data-id="">
+                <div class="room">vip</div>
+                <div class="card-head-box">
+                  <h2 class="heading-tertiary">natnael abebaw</h2>
+                  <button class="btn btn-blue promote">Promote</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="occupations">
+            <h2 class="reservation-heading">Occupations</h2>
+            <div class="search">
+              <input
+                class="search-input"
+                type="text"
+                placeholder="Search"
+                name=""
+                id=""
+              />
+              <button class="search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+            <div class="cards">
+              <div class="card" data-id="">
+                <table>
+                  <tr>
+                    <td>User</td>
+                    <td class="heading-tertiary">Natnael abebaw</td>
+                  </tr>
+                  <tr>
+                    <td>Room type</td>
+                    <td>Vip</td>
+                  </tr>
+                  <tr>
+                    <td>Expiry time</td>
+                    <td>30"</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="popup">
+      <div class="popup-form">
+        <h2 class="heading-tertiary">Promote</h2>
+        <form
+          method="post"
+          action="http://127.0.0.1:3000/client/hotelRoomTypes"
+          class="form"
+        >
+          <input
+            class="input-id"
+            id="roomtype"
+            type="text"
+            name="name"
+            required
+          />
+          <label for="roomtype" class="form-label"
+            >Number of days of occupacy</label
+          >
+
+          <input
+            class="form-input form-input--password"
+            id="roomtype"
+            type="text"
+            name="name"
+            required
+          />
+
+          <button class="btn btn-blue btn-register">Promote</button>
+        </form>
+      </div>
+    </div>
+    <div class="overlay"></div>
+  </body>
+</html>

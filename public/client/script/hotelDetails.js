@@ -51,7 +51,8 @@ class HotelDetails {
         </p>
       </div>
       <div class="u-centering">
-        <button class="btn btn-blue btn-reserved"  ${
+        <button
+        class="btn btn-blue btn-reserved"  ${
           !card.available ? "disabled" : ""
         } onClick="hotelDetail.reserve(${card.id})">Reserve</button>
       </div>
@@ -77,6 +78,7 @@ class HotelDetails {
       body: JSON.stringify(data),
     });
     this.renderReservationCards();
+    location = "http://localhost:3000/client/myReservationsPage"
   }
 }
 

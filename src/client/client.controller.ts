@@ -137,8 +137,27 @@ export class ClientController {
   }
 
   @UseGuards(JwtGuard)
-  @Patch('reservation')
+  @Render("reservationManagement")
+  @Post('promoteReservation')
   async promoteReservationToOccupancy(@Req() req: Request, @Body() data: UpdateReservationDto) {
     return await this.clientService.promoteReservationToOccupancy(req.user, data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Render('my_reservation')
+  @Get('myReservationsPage')
+  getMyReservationsPage(@Req() req: Request) {
+    if(!req.user['full_name']) {
+      throw new ForbiddenException("Not allowed for hotels.")
+    }
+  }
+
+  @UseGuards(JwtGuard)
+  @Render('reservationManagement')
+  @Get('reservationManagementPage')
+  getReservationManagementPage(@Req() req: Request) {
+    if(req.user['full_name']) {
+      throw new ForbiddenException("Not allowed for users.")
+    }
   }
 }

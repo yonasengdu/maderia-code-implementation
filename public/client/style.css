@@ -65,7 +65,7 @@ body {
 .grid {
   display: grid; }
   .grid-2-col {
-    grid-template-columns: 50vw 50vw; }
+    grid-template-columns: 1fr 1fr; }
   .grid-2-col-sm-lg {
     grid-template-columns: 0.5fr 1fr; }
   .grid-2-col-lg-sm {
@@ -415,6 +415,41 @@ body {
   width: 100%;
   height: 100%; }
 
+.reservationPopup .popup {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40rem;
+  height: 20rem;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  z-index: 1; }
+  .reservationPopup .popup-text {
+    font-size: 3.2rem; }
+  .reservationPopup .popup-text:last-of-type {
+    margin-bottom: 3.2rem; }
+  .reservationPopup .popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.8rem;
+    cursor: pointer; }
+
+.reservationPopup .overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
 .hmap {
   width: 85%;
   margin: 5rem auto;
@@ -481,7 +516,7 @@ body {
   row-gap: 5rem; }
   .cards .card {
     border-top: 2px solid var(--color-primary);
-    box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.06);
     height: fit-content;
     padding: 1rem; }
     .cards .card p {
@@ -518,6 +553,15 @@ body {
       display: flex;
       gap: 0.4rem;
       justify-content: center; }
+    .cards .card .time {
+      font-size: 4rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 0 0 2rem; }
+    .cards .card .time-heading {
+      font-size: 1.6rem;
+      margin: 2rem 0 5px 0;
+      text-align: center; }
   .cards .card-review {
     padding: 2rem 3rem;
     border: 1px solid #efefefef;
@@ -536,6 +580,39 @@ body {
     .cards .card-review blockquote {
       font-size: 1.4rem;
       margin-bottom: 1rem; }
+
+.search {
+  display: flex;
+  justify-content: center; }
+  .search-input, .search-btn {
+    font-size: 1.6rem;
+    font-family: inherit;
+    color: inherit;
+    margin-bottom: 0.2rem;
+    padding: 0.8rem 1.2rem;
+    border: 2px solid var(--color-primary-light-3); }
+  .search-input {
+    width: 70%;
+    transition: all 0.3s;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem; }
+    .search-input:focus {
+      width: 75%;
+      outline: none;
+      border: 2px solid var(--color-primary); }
+  .search-btn {
+    cursor: pointer;
+    transition: all 0.3s;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-left: none;
+    background-color: transparent;
+    font-size: 2rem; }
+  .search-btn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary); }
+  .search-btn:active {
+    transform: scale(0.95); }
 
 .header-r {
   background-color: #1864ab;
@@ -601,3 +678,54 @@ body {
   .hotelManagement .btn-blue {
     font-size: 1.4rem;
     padding: 5px 8px; }
+
+.my-reservation {
+  padding: 0 25rem; }
+  .my-reservation .btn-blue {
+    background-color: orangered; }
+
+.reservationManagement {
+  padding: 0 10rem;
+  margin-bottom: 6rem; }
+  .reservationManagement .reservation-box {
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.07);
+    border: 1px solid #eee;
+    height: 100vh;
+    border-radius: 20px;
+    height: 150vh;
+    overflow: hidden; }
+  .reservationManagement .reservations,
+  .reservationManagement .occupations {
+    border-right: 1px solid #eee;
+    padding: 2rem;
+    height: 100%; }
+  .reservationManagement .reservation-heading {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem; }
+  .reservationManagement .btn-blue {
+    background-color: var(--color-primary) !important; }
+  .reservationManagement .cards {
+    height: 140vh;
+    overflow: auto; }
+  .reservationManagement .card {
+    margin-bottom: 3rem;
+    border: none;
+    border: 1px solid #eee; }
+    .reservationManagement .card .room {
+      text-transform: uppercase;
+      font-size: 1.6rem;
+      color: var(--color-primary);
+      padding-left: 5px; }
+    .reservationManagement .card table {
+      margin: 0; }
+
+.popup-form {
+  padding: 6rem; }
+  .popup-form .input-id {
+    opacity: 0; }
+  .popup-form .form-input {
+    margin-bottom: 2rem; }
+
+.showPopup .popup {
+  width: 30%; }

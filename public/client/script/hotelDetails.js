@@ -9,7 +9,11 @@ class HotelDetails {
   constructor() {
     ( async function (){
       await this.renderReservationCards();
-      this.renderReview(3434);
+      console.log(this.cards.length)
+       if(this.cards.length >=1){
+        console.log("ok")
+        this.renderReview(this.cards[0].hotelId);
+      }
     }.bind(this)())
   }
 
@@ -27,10 +31,9 @@ class HotelDetails {
       body: JSON.stringify(data),
     });
      this.cards = await request.json();
-    // if(this.cards[0].hotelId){
-    
-    // }
-      // inputId.value = this.cards[0].hotelId
+    if(this.cards[0]){
+      inputId.value = this.cards[0].hotelId
+    }
    let cardHtml = "";
     this.cards.forEach((card) => {
       cardHtml += `
@@ -89,20 +92,12 @@ class HotelDetails {
 
 
   async renderReview(id){
-    const data = {
-      hotelId:id,
-    }
-    const request = await fetch("http://localhost:3000/review", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    console.log("see")
+    const request = await fetch(`http://localhost:3000/review/getReview/${id}`);
 
     const reviews = await request.json();
     
+
     console.log(reviews,"review")
 
   }

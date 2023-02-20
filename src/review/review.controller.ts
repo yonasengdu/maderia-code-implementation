@@ -7,6 +7,12 @@ import { ReviewService } from './review.service';
 export class ReviewController {
     constructor(private reviewService:ReviewService){}
 
+    @Get('getReview/:id')
+    async getReviewsForHotel(@Param('id', new ParseIntPipe()) id) {
+          return this.reviewService.getReviewsForHotel(id)
+    }
+
+
     @UseGuards(JwtGuard)
     @Post()
     @Render('hotelDetails')
@@ -21,10 +27,7 @@ export class ReviewController {
         }
 
 
-    @Post(':id')
-    async getReviewsForHotel(@Param('id', new ParseIntPipe()) id) {
-          return this.reviewService.getReviewsForHotel(id)
-    }
+    
 
     /**
      * get all reviews

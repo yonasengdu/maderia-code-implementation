@@ -119,9 +119,9 @@ export class ReviewService {
       const averageRating = sumRatings / numReviews;
       await this.prisma.hotel.update({
         where: { id: hotelId },
-        data: { averageRating: averageRating },
+        data: { averageRating: Math.round(averageRating) },
       });
-      return averageRating;
+      return Math.round(averageRating);
     }
   }
 

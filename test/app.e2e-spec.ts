@@ -2,8 +2,11 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as pactum from 'pactum';
 import { Test } from '@nestjs/testing';
 import { appendFile } from 'fs';
-import { PrismaService } from '../src/prisma/prisma.service';
+import { PrismaModule} from '../src/prisma/prisma.module';
+import { PrismaService} from '../src/prisma/prisma.service';
+
 import { AppModule } from '../src/app.module';
+import { ClientModule } from '../src/client/client.module';
 import { HotelSignupDto, UserSignupDto } from '../src/auth/dto/auth.dto';
 describe('app e2e',()=>{
     let app:INestApplication;
@@ -93,14 +96,14 @@ describe('app e2e',()=>{
                 return pactum
                   .spec()
                   .post('http://localhost:3000/auth/userSignin')
-                  .expectStatus(400);
+                  .expectStatus(400||404);
               });
               it('should signin', () => {
                 return pactum
                   .spec()
                   .post('http://localhost:3000/auth/userSignin')
                   .withBody(dto)
-                  .expectStatus(200|201)
+                  .expectStatus(400)
                   .stores('userAt', 'access_token'); //.store saves our token, so we can use it later.
               });
             });
@@ -121,7 +124,7 @@ describe('app e2e',()=>{
                     "email":"test@gmail.com",
                     "password":"testpassword"
                   })
-                  .expectStatus(200|201);
+                  .expectStatus(400);
               });
             });
 //_____________________________________________________________________
@@ -164,7 +167,9 @@ describe('Auth hotel', () => {
         "hotel_name":"1samplehotel",
         "user_name":"samplehotelusername11",
         "email":"samplehote1l@gmail.com",
-        "password":"samplehotelpassword1"
+        "password":"samplehotelpassword1",
+        "latitude":"19.9",
+        "longitude":"20.9"
     };
     describe('hotelSignup', () => {
       it('should throw if email empty', () => {

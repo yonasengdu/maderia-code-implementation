@@ -33,7 +33,7 @@
       </div>
     </header>
     <main>
-      <section class="hotelDetail" data-id="{{ hotelId }}">
+      <section class="hotelDetail hotelManagement" data-id="{{ hotelId }}">
         <h1 class="heading-secondary">Hotel Room Types</h1>
         <div class="grid grid-2-col-lg-sm">
           <div class="cards grid grid-3-col">
@@ -71,7 +71,8 @@
 
           <div class="hotel-review">
             <h2 class="heading-tertiary">Reviews</h2>
-            <div class="cards">
+            <div class="cards cards-review">
+
               <div class="card card-review">
                 <div class="rating-box">
                   <p>Rating</p>
@@ -97,6 +98,7 @@
                 </blockquote>
                 <p>Jonas J.</p>
               </div>
+
               <div class="card card-review">
                 <div class="rating-box">
                   <p>Rating</p>
@@ -123,9 +125,134 @@
                 <p>Jonas J.</p>
               </div>
             </div>
+                        <div class="form-box">
+              <h2 class="heading-tertiary">Add Review</h2>
+
+              <form
+                method="post"
+                action="http://localhost:3000/review"
+                class="form"
+              >
+                <input
+                  class="input-id"
+                  id="roomtype"
+                  type="text"
+                  name="id"
+                  required
+                />
+                <label for="Description" class="form-label">Review</label>
+
+                <textarea
+                  class="form-textarea form-input--password"
+                  id="Description"
+                  type="text"
+                  name="text"
+                  required
+                >
+                </textarea>
+
+                <label for="numberofRooms" class="form-label">Rate</label>
+                <input
+                  class="form-input form-input--password"
+                  id="numberofRooms"
+                  type="number"
+                  name="rating"
+                  min="0"
+                  max="5"
+                  required
+                />
+
+                <button class="btn btn-blue btn-register">Add Review</button>
+              </form>
+            </div>
           </div>
+
         </div>
       </section>
     </main>
+        <footer class="section-footer">
+        <div class="footer-col">
+          <div class="nav-logo">
+            <a href="#" class="nav__logo">maderia.com</a>
+          </div>
+          <div class="footer-social-media">
+            <a href="https://www.facebook.com/natty">
+              <i class="fa-brands fa-facebook"></i> <span>facebook</span>
+            </a>
+            <a href="https://www.facebook.com/messager/natty">
+              <i class="fa-brands fa-facebook-messenger"></i
+              ><span>messager</span>
+            </a>
+            <a href="https://www.twitter.com/natty">
+              <i class="fa-brands fa-twitter"></i> <span>twitter</span>
+            </a>
+            <a href="https://www.linkdin.com/natty"
+              ><i class="fa-brands fa-linkedin"></i><span>linkdin</span></a
+            >
+          </div>
+          <p class="footer-copyright">
+            Copyright &copy; 2022 by , maderia.com Inc. All rightsreserved.
+          </p>
+        </div>
+        <nav class="footer-col">
+          <h3 class="footer-heading">contact us</h3>
+          <address class="footer-address">
+            King George VI Av. /AR_06_1002 Av. , Addis Ababa University ,4 kilo
+            campas.
+          </address>
+          <a href="tel:+251920123302" class="footer-nav-link"
+            >+251-920-123-302</a
+          >
+          <a href="mailto:natnaell70a@gmail.com" class="footer-nav-link">
+            maderia70a@gmail.com</a
+          >
+        </nav>
+
+        <nav class="footer-col">
+          <h3 class="footer-heading">Overview</h3>
+          <ul class="footer-nav-links">
+            <li class="footer-nav-item">
+              <a class="footer-nav-link" href="#">Home</a>
+            </li>
+            <li class="footer-nav-item">
+              <a class="footer-nav-link" href="#feature">Features</a>
+            </li>
+            <li class="footer-nav-item">
+              <a class="footer-nav-link" href="#hotels">Hotels</a>
+            </li>
+            <li class="footer-nav-item">
+              <a class="footer-nav-link" href="/client/nearbyHotels"
+                >Nearby Hotel</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col">
+          <h3 class="footer-heading" >Account</h3>
+          <ul class="footer-nav-links">
+            <li class="footer-nav-item">
+              <a class="footer-nav-link" href="/auth/signup"> Register</a>
+            </li>
+            <li class="footer-nav-item">
+              <a class="footer-nav-link" href="/auth/signin">Sign in</a>
+            </li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col">
+          <h3 class="footer-heading">Support</h3>
+          <ul class="footer-nav-links">
+            <li class="footer-nav-item">
+              <a class="footer-nav-link" href="#"
+                >Contact Us</a
+              >
+            </li>
+            <li class="footer-nav-item">
+              <a class="footer-nav-link" href="#">About Us</a>
+            </li>
+          </ul>
+        </nav>
+      </footer>
   </body>
 </html>

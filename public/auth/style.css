@@ -21,6 +21,12 @@ body {
   font-size: 2.4rem;
   margin-bottom: 2rem; }
 
+.heading-tertiary {
+  font-size: 2rem;
+  letter-spacing: 1.5px;
+  font-size: 500;
+  margin-bottom: 1.5rem; }
+
 .paragraph {
   font-size: 1.8rem;
   width: 50rem;
@@ -59,9 +65,13 @@ body {
 .grid {
   display: grid; }
   .grid-2-col {
-    grid-template-columns: 50vw 50vw; }
+    grid-template-columns: 1fr 1fr; }
   .grid-2-col-sm-lg {
     grid-template-columns: 0.5fr 1fr; }
+  .grid-2-col-lg-sm {
+    grid-template-columns: 2fr 1fr; }
+  .grid-3-col {
+    grid-template-columns: repeat(3, 1fr); }
   .grid-user-profile {
     display: grid;
     height: 100vh;
@@ -159,18 +169,32 @@ body {
     padding: 0 !important;
     display: block;
     margin-bottom: 3rem; }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6; }
+    .btn:disabled:hover, .btn:disabled:active {
+      transform: none; }
 
 .hero__text {
   margin-top: 8.4rem;
-  color: #e7f5ff; }
+  color: #e7f5ff;
+  text-align: center; }
   .hero__text-p {
-    font-size: 2.4rem; }
+    width: 80%;
+    font-size: 1.8rem;
+    margin: 2rem auto;
+    color: #ffffff;
+    letter-spacing: 0.7px; }
+  .hero__text-links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center; }
 
 .form {
   width: 100%; }
   .form > * {
     display: block; }
-  .form-input {
+  .form-input, .form-textarea {
     font-size: 1.6rem;
     font-family: inherit;
     color: inherit;
@@ -179,9 +203,11 @@ body {
     padding: 0.8rem 1.2rem;
     border: 2px solid var(--color-primary-light-3);
     border-radius: 0.5rem; }
-    .form-input:focus {
+    .form-input:focus, .form-textarea:focus {
       outline: none;
       border: 2px solid var(--color-primary); }
+  .form-textarea {
+    height: 10rem; }
   .form-label {
     font-size: 1.6rem;
     margin-bottom: 0.7rem; }
@@ -398,6 +424,41 @@ body {
   width: 100%;
   height: 100%; }
 
+.reservationPopup .popup {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40rem;
+  height: 20rem;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  z-index: 1; }
+  .reservationPopup .popup-text {
+    font-size: 3.2rem; }
+  .reservationPopup .popup-text:last-of-type {
+    margin-bottom: 3.2rem; }
+  .reservationPopup .popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.8rem;
+    cursor: pointer; }
+
+.reservationPopup .overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
 .hmap {
   width: 85%;
   margin: 5rem auto;
@@ -458,6 +519,110 @@ body {
 .hidden {
   display: none; }
 
+.cards {
+  padding: 2rem 3rem;
+  column-gap: 3rem;
+  row-gap: 5rem; }
+  .cards .card {
+    border-top: 2px solid var(--color-primary);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.06);
+    height: fit-content;
+    padding: 1rem; }
+    .cards .card p {
+      font-size: 1.6rem; }
+    .cards .card-head-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.4rem; }
+      .cards .card-head-box h2 {
+        margin: 0;
+        padding: 5px 0 0 1rem;
+        text-transform: uppercase; }
+      .cards .card-head-box button {
+        background-color: orangered; }
+    .cards .card table {
+      border-collapse: collapse;
+      font-size: 1.6rem;
+      width: 100%;
+      margin-bottom: 2rem; }
+      .cards .card table tr:nth-child(even) {
+        background-color: #eee; }
+      .cards .card table td {
+        padding: 5px 8px; }
+    .cards .card .decription {
+      text-align: center;
+      margin-bottom: 2.4rem; }
+      .cards .card .decription h2 {
+        text-transform: uppercase;
+        margin-bottom: 1rem; }
+      .cards .card .decription p {
+        font-size: 1.3rem; }
+    .cards .card .buttons {
+      display: flex;
+      gap: 0.4rem;
+      justify-content: center; }
+    .cards .card .time {
+      font-size: 4rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 0 0 2rem; }
+    .cards .card .time-heading {
+      font-size: 1.6rem;
+      margin: 2rem 0 5px 0;
+      text-align: center; }
+  .cards .card-review {
+    padding: 2rem 3rem;
+    border: 1px solid #efefefef;
+    border-radius: 10px; }
+    .cards .card-review:not(:last-child) {
+      margin-bottom: 3rem; }
+    .cards .card-review .rating-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem; }
+      .cards .card-review .rating-box .rating {
+        display: flex;
+        flex-direction: column;
+        align-items: center; }
+    .cards .card-review blockquote {
+      font-size: 1.4rem;
+      margin-bottom: 1rem; }
+
+.search {
+  display: flex;
+  justify-content: center; }
+  .search-input, .search-btn {
+    font-size: 1.6rem;
+    font-family: inherit;
+    color: inherit;
+    margin-bottom: 0.2rem;
+    padding: 0.8rem 1.2rem;
+    border: 2px solid var(--color-primary-light-3); }
+  .search-input {
+    width: 70%;
+    transition: all 0.3s;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem; }
+    .search-input:focus {
+      width: 75%;
+      outline: none;
+      border: 2px solid var(--color-primary); }
+  .search-btn {
+    cursor: pointer;
+    transition: all 0.3s;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-left: none;
+    background-color: transparent;
+    font-size: 2rem; }
+  .search-btn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary); }
+  .search-btn:active {
+    transform: scale(0.95); }
+
 .header-r {
   background-color: #1864ab;
   padding: 1.6rem 0;
@@ -476,18 +641,147 @@ body {
   background-image: url(../../img/img-2.jpg);
   background-size: cover;
   background-position: center;
-  padding: 2rem 0 8.4rem 0; }
+  padding: 2rem 0 8.4rem 0;
+  height: 90vh; }
+
+.section-feature {
+  padding: 9.6rem; }
+  .section-feature .card-home {
+    text-align: center;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem; }
+    .section-feature .card-home i {
+      font-size: 4rem; }
+    .section-feature .card-home h3 {
+      font-size: 2rem; }
+
+.section-hotels {
+  padding: 9.6rem; }
+  .section-hotels .card-home {
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; }
+    .section-hotels .card-home i {
+      font-size: 4rem; }
+    .section-hotels .card-home img {
+      width: 100%; }
+    .section-hotels .card-home .hotel-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3.2rem; }
+      .section-hotels .card-home .hotel-detail .hotel-name p {
+        text-transform: uppercase; }
+      .section-hotels .card-home .hotel-detail .hotel-name h3 {
+        font-size: 2.4rem; }
+      .section-hotels .card-home .hotel-detail .rating {
+        text-align: center; }
+      .section-hotels .card-home .hotel-detail .stars i {
+        font-size: 2rem; }
+
+.error {
+  width: 50%;
+  height: 50vh;
+  margin: 10rem auto;
+  border: 1px solid #eee;
+  box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.07);
+  border-radius: 10px;
+  padding: 6rem; }
+  .error h1 {
+    font-size: 3rem;
+    color: orangered;
+    margin-bottom: 2rem; }
+  .error h2 {
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem; }
+  .error p {
+    font-size: 1.6rem; }
+
+.section-footer {
+  padding: 9.6rem;
+  display: grid;
+  margin-top: 6.4rem;
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr;
+  column-gap: 4rem;
+  color: #eee;
+  background-color: var(--color-primary); }
+
+.footer-col:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  height: 23rem; }
+
+.footer-social-media a:not(:last-child) {
+  display: inline-block;
+  margin-right: 5px; }
+
+.footer-social-media a:link,
+.footer-social-media a:visited {
+  display: inline-block;
+  font-size: 3.2rem;
+  text-decoration: none;
+  color: #eee;
+  transition: all 0.2s; }
+
+.footer-social-media a:hover,
+.footer-social-media a:active {
+  color: var(--color-gray-light-3); }
+
+.footer-social-media a span {
+  display: none; }
+
+.footer-copyright {
+  margin-top: auto;
+  font-size: 1.4rem; }
+
+.footer-heading {
+  font-size: 2rem;
+  margin-bottom: 3.2rem; }
+
+.footer-address {
+  font-size: 1.4rem;
+  margin-bottom: 4.8rem; }
+
+a[href^="tel"] {
+  display: inline-block;
+  margin-bottom: 1.2rem; }
+
+.footer-nav-links {
+  list-style: none; }
+
+.footer-nav-link:link,
+.footer-nav-link:visited {
+  transition: all 0.2s;
+  text-decoration: none;
+  color: #eee;
+  font-size: 1.6rem; }
+
+.footer-nav-link:active,
+.footer-nav-link:hover {
+  color: var(--color-gray-light-3); }
+
+.footer-nav-item:not(:last-child) {
+  margin-bottom: 1rem; }
 
 .header-sign-in {
   background-color: #1864ab;
   padding: 1rem 0;
-  margin-bottom: 5rem; }
+  margin-bottom: 3rem; }
 
 .section-sign-in .sign-in {
   padding: 5rem 2rem;
   width: 38rem;
+  margin: 3rem auto;
   border-radius: 0.5rem;
-  border: 1px solid var(--color-gray-light-1);
+  border: 1px solid #ddd;
   align-self: center;
   justify-self: center; }
 
@@ -506,3 +800,75 @@ body {
 .section-nearHotels .btn-box {
   text-align: center;
   border-bottom: 1px solid var(--color-gray-light-3); }
+
+.hotelManagement {
+  padding: 0 10rem; }
+  .hotelManagement .form-label {
+    margin-bottom: 3px; }
+  .hotelManagement .form-input,
+  .hotelManagement .form-textarea {
+    margin-bottom: 1.5rem; }
+  .hotelManagement .form-box {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+    padding: 3rem 2rem; }
+  .hotelManagement .btn-blue {
+    font-size: 1.4rem;
+    padding: 5px 8px; }
+
+.my-reservation {
+  padding: 0 25rem; }
+  .my-reservation .btn-blue {
+    background-color: orangered; }
+
+.hotel-review .form-box {
+  width: 80%;
+  margin-left: 3.5rem; }
+
+.reservationManagement {
+  padding: 0 10rem;
+  margin-bottom: 6rem; }
+  .reservationManagement .reservation-box {
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.07);
+    border: 1px solid #eee;
+    height: 100vh;
+    border-radius: 20px;
+    height: 150vh;
+    overflow: hidden; }
+  .reservationManagement .reservations,
+  .reservationManagement .occupations {
+    border-right: 1px solid #eee;
+    padding: 2rem;
+    height: 100%; }
+  .reservationManagement .reservation-heading {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem; }
+  .reservationManagement .btn-blue {
+    background-color: var(--color-primary) !important; }
+  .reservationManagement .cards {
+    height: 140vh;
+    overflow: auto; }
+  .reservationManagement .card {
+    margin-bottom: 3rem;
+    border: none;
+    border: 1px solid #eee; }
+    .reservationManagement .card .room {
+      text-transform: uppercase;
+      font-size: 1.6rem;
+      color: var(--color-primary);
+      padding-left: 5px; }
+    .reservationManagement .card table {
+      margin: 0; }
+
+.popup-form {
+  padding: 6rem; }
+  .popup-form .form-input {
+    margin-bottom: 2rem; }
+
+.showPopup .popup {
+  width: 30%; }
+
+.input-id {
+  opacity: 0; }

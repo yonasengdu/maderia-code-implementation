@@ -1,33 +1,35 @@
-import { All, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { All, ForbiddenException, Injectable, NotFoundException, Render, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { reviewDto, updateReviewDto } from './review.dto'
+import { CreatereviewDto, reviewDto, updateReviewDto } from './review.dto'
 
 @Injectable()
 export class ReviewService {
     constructor(private prisma:PrismaService){}
-
-    async createReview(dto: reviewDto, userId: number) {
+    
+    async createReview(dto: CreatereviewDto, userId: number) {
+      let ID = Number(dto.id);
+      let rate = Number(dto.rating);
       try {
           let hotel = await this.prisma.hotel.findUnique({
               where:{
-                  id:dto.hotelId
+                  id:Math.round(ID)
               }
           })
           if (!hotel){
-              throw  new NotFoundException(`Hotel  with ID ${dto.hotelId} not found.`);  
+              throw  new NotFoundException(`Hotel  with ID ${dto.id} not found.`);  
           }
           let newReview = await this.prisma.review.create({
               data: {
                   authorId: userId,
-                  hotelId:dto.hotelId,
-                  rating:dto.rating,
+                  hotelId:Math.round(ID),
+                  rating:Math.round(rate),
                   text:dto.text
               }
           });
   
           // Update the average rating for the hotel
-          await this.getAverageRating(dto.hotelId);
+          await this.getAverageRating(Math.round(ID));
   
           return {
               success:true,
@@ -40,7 +42,6 @@ export class ReviewService {
           return { success: false, message: error.message };
       }
   }
-   
     async getAllReviews(){
         let AllReviews = await this.prisma.review.findMany();
         return {
@@ -56,6 +57,15 @@ export class ReviewService {
             }
         });
         return Review;
+    }
+
+    async getUserById(userId:number){
+      let user = await this.prisma.user.findUnique({
+        where:{
+          id:userId
+        }
+      })
+      return user;
     }
 
     async updateReview(dto:updateReviewDto,reviewId:number,userId:number){

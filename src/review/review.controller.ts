@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Render, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Redirect, Render, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/jwt.guard';
 import { CreatereviewDto, reviewDto, updateReviewDto } from './review.dto';
 import { ReviewService } from './review.service';
@@ -20,9 +20,8 @@ export class ReviewController {
 
     @UseGuards(JwtGuard)
     @Post()
-    @Render('hotelDetails')
+    @Redirect('http://localhost:3000/client/index',301)
     async createReview(@Body() dto: any, @Req() req: any) {
-        console.log(dto)
         return await this.reviewService.createReview(dto, req.user.id)
     }
 

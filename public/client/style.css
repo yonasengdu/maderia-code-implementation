@@ -177,9 +177,18 @@ body {
 
 .hero__text {
   margin-top: 8.4rem;
-  color: #e7f5ff; }
+  color: #e7f5ff;
+  text-align: center; }
   .hero__text-p {
-    font-size: 2.4rem; }
+    width: 80%;
+    font-size: 1.8rem;
+    margin: 2rem auto;
+    color: #ffffff;
+    letter-spacing: 0.7px; }
+  .hero__text-links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center; }
 
 .form {
   width: 100%; }
@@ -632,7 +641,68 @@ body {
   background-image: url(../../img/img-2.jpg);
   background-size: cover;
   background-position: center;
-  padding: 2rem 0 8.4rem 0; }
+  padding: 2rem 0 8.4rem 0;
+  height: 90vh; }
+
+.section-feature {
+  padding: 9.6rem; }
+  .section-feature .card-home {
+    text-align: center;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem; }
+    .section-feature .card-home i {
+      font-size: 4rem; }
+    .section-feature .card-home h3 {
+      font-size: 2rem; }
+
+.section-hotels {
+  padding: 9.6rem; }
+  .section-hotels .card-home {
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; }
+    .section-hotels .card-home i {
+      font-size: 4rem; }
+    .section-hotels .card-home img {
+      width: 100%; }
+    .section-hotels .card-home .hotel-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3.2rem; }
+      .section-hotels .card-home .hotel-detail .hotel-name p {
+        text-transform: uppercase; }
+      .section-hotels .card-home .hotel-detail .hotel-name h3 {
+        font-size: 2.4rem; }
+      .section-hotels .card-home .hotel-detail .rating {
+        text-align: center; }
+      .section-hotels .card-home .hotel-detail .stars i {
+        font-size: 2rem; }
+
+.error {
+  width: 50%;
+  height: 50vh;
+  margin: 10rem auto;
+  border: 1px solid #eee;
+  box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.07);
+  border-radius: 10px;
+  padding: 6rem; }
+  .error h1 {
+    font-size: 3rem;
+    color: orangered;
+    margin-bottom: 2rem; }
+  .error h2 {
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem; }
+  .error p {
+    font-size: 1.6rem; }
 
 .header-sign-in {
   background-color: #1864ab;

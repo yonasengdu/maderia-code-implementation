@@ -8,11 +8,8 @@ export class ReviewService {
     constructor(private prisma:PrismaService){}
     
     async createReview(dto: CreatereviewDto, userId: number) {
-      console.log(dto);
       let ID = Number(dto.id);
       let rate = Number(dto.rating);
-      console.log({ID,})
-      console.log({rate,})
       try {
           let hotel = await this.prisma.hotel.findUnique({
               where:{

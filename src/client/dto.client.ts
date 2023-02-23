@@ -60,5 +60,5 @@ export class UpdateReservationDto {
   @IsNotEmpty()
   @IsNumber()
   @Transform(({ value }) => Number.parseInt(value))
-  occupancyLifetime: number
+  occupancyLifetimeDays: number
 }

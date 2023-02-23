@@ -30,14 +30,14 @@ export class ClientService {
     }
     // update the reservation
     const occupancyExpiryTime = new Date();
-    occupancyExpiryTime.setMinutes(occupancyExpiryTime.getMinutes() + data.occupancyLifetime)
+    occupancyExpiryTime.setDate(occupancyExpiryTime.getDate() + data.occupancyLifetimeDays)
     return await this.prisma.reservation.update({
       where: {
         id: data.reservationId,
       },
       data: {
         occupancy: true,
-        occupancyLifetime: data.occupancyLifetime,
+        occupancyLifetime: data.occupancyLifetimeDays * 1440, // this is in minutes
         occupancyExpiryTime: occupancyExpiryTime,
       }
     })

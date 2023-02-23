@@ -44,7 +44,7 @@ export class AuthController {
     // sent back with every relevant request. (now the client is logged in)
     res.cookie('token', token)
     // if sign-up is successful, we redirect to the index page.
-    return {url: '/'}
+    return {url: '/client/index'}
   }
 
   /**

@@ -42,7 +42,11 @@
             <a href='/auth/profile' class='nav-link profile-icon'>
               <img
                 class='nav-link-img'
-                src='../img/customer-1.jpg'
+                {{#if user}}
+                  src='../img/customer-1.jpg'
+                {{else}}
+                  src='../img/hotel2.jpg'
+                {{/if}}
                 alt='user-photo'
               />
               <span class='username'>{{name}}</span>

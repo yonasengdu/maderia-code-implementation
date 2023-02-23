@@ -35,7 +35,7 @@ class ReservationManagement {
     this.cards = await response.json();
     console.log(this.cards);
     this.renderReservationData();
-    this.renderOccupationData();
+    this.renderOccupancyData();
     searchReservationBtn.addEventListener('click', function () {
       this.searchRearrage(searchInputReservation.value, true);
     }.bind(this));
@@ -60,7 +60,7 @@ class ReservationManagement {
     reservationCards.innerHTML = cardHtml;
   }
 
-  renderOccupationData() {
+  renderOccupancyData() {
     let cardHtml = '';
     this.cards.occupancies.forEach((card) => {
       let expiry = new Date(card.expiryTime);
@@ -91,6 +91,7 @@ class ReservationManagement {
     document.body.classList.remove('reservationPopup');
   }
 
+  // we use this algorithm to find the magnitude of similarity between strings.
   longest_common_subsequence(strOne, strTwo) {
     const matrix = []; // the grid
 
@@ -134,7 +135,7 @@ class ReservationManagement {
       item['similarity'] = similarity;
     }
     list.sort((a, b) => b.similarity - a.similarity)
-    reservation ? this.renderReservationData() : this.renderOccupationData();
+    reservation ? this.renderReservationData() : this.renderOccupancyData();
   }
 }
 
